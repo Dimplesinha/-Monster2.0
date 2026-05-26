@@ -1,0 +1,299 @@
+/* ── Root ─────────────────────────────────────────────────────── */
+.root {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* ── 1. Yellow promo bar ──────────────────────────────────────── */
+.promoBar {
+  background: #fbbf24;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 3rem 0.5rem 1rem;
+  position: relative;
+}
+
+.promoInner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  justify-content: center;
+}
+
+.promoText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1c1c1c;
+}
+
+.promoLink {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #1e1133;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid #1e1133;
+  padding-bottom: 1px;
+  transition: opacity 0.15s;
+}
+
+.promoLink:hover { opacity: 0.7; }
+
+.promoClose {
+  position: absolute;
+  right: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: #374151;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.promoClose:hover { background: rgba(0, 0, 0, 0.12); }
+
+.promoClose:focus-visible {
+  outline: 3px solid #1e1133;
+  outline-offset: 2px;
+}
+
+/* ── 2. White brand row ───────────────────────────────────────── */
+.brandRow {
+  background: #ffffff;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* "Monster" wordmark — CSS text-only brand treatment */
+.wordmark {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #6b21a8;
+  letter-spacing: -2px;
+  text-decoration: none;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.wordmark:hover { color: #7e22ce; }
+
+.wordmark:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.brandAuth {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.greeting {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-right: 0.25rem;
+}
+
+/* Filled "Sign up" */
+.signUpBtn {
+  padding: 0.5rem 1.375rem;
+  background: #6b21a8;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 2px solid #6b21a8;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.signUpBtn:hover { background: #7e22ce; border-color: #7e22ce; }
+
+.signUpBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Outlined "Log in" / "Log out" / "Dashboard" */
+.logInBtn {
+  padding: 0.5rem 1.375rem;
+  color: #6b21a8;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 2px solid #6b21a8;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.logInBtn:hover { background: #6b21a8; color: #fff; }
+
+.logInBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* ── 3. Light gray nav row ────────────────────────────────────── */
+.navRow {
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.navInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.25rem;
+  border-radius: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #374151;
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Nav links */
+.navLinks {
+  display: flex;
+  list-style: none;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex: 1;
+}
+
+.navLinks li a {
+  display: block;
+  padding: 0 0.9rem;
+  height: 48px;
+  line-height: 48px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.navLinks li a:hover { color: #6b21a8; }
+
+.navLinks li a:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: -2px;
+}
+
+/* Mobile-only items hidden on desktop */
+.mobileOnly { display: none; }
+
+/* Employers / Post Job link */
+.postJobLink {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0 0 0 1rem;
+  margin-left: 0.5rem;
+  border-left: 1px solid #d1d5db;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.postJobLink:hover { color: #6b21a8; }
+
+.postJobLink:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .brandRow { padding: 0 1.25rem; }
+  .wordmark { font-size: 1.875rem; letter-spacing: -1.5px; }
+
+  .hamburger { display: flex; }
+
+  .navLinks {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #f3f4f6;
+    border-bottom: 2px solid #e5e7eb;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 0 1rem;
+    z-index: 99;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .navLinks.navOpen { display: flex; }
+
+  .navLinks li { width: 100%; }
+
+  .navLinks li a {
+    height: auto;
+    line-height: 1.4;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .mobileOnly { display: block; }
+
+  .postJobLink { display: none; }
+
+  .navInner { padding: 0 1.25rem; position: relative; }
+}
+
+@media (max-width: 480px) {
+  .signUpBtn,
+  .logInBtn { padding: 0.4rem 1rem; font-size: 0.875rem; }
+  .wordmark { font-size: 1.625rem; }
+}

@@ -1,0 +1,464 @@
+/* ── Page shell ───────────────────────────────────────────────── */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+/* ── Dark purple brand header ─────────────────────────────────── */
+.topBar {
+  background: #1e1133;
+  height: 72px;
+  padding: 0 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+/* "Monster" wordmark — CSS-only brand treatment */
+.logo {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #d8b4fe;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.logo:hover { color: #fff; }
+
+.topBarNav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topBarText {
+  font-size: 0.875rem;
+  color: #c4b5fd;
+}
+
+/* Outlined "Log In" button in top bar */
+.topBarLogin {
+  padding: 0.4rem 1.25rem;
+  border: 2px solid #c4b5fd;
+  border-radius: 6px;
+  color: #e9d5ff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.topBarLogin:hover {
+  background: #c4b5fd;
+  color: #1e1133;
+}
+
+.topBarLogin:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* ── Toast ────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  top: 84px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: #1e1133;
+  color: #e9d5ff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 200;
+  white-space: nowrap;
+}
+
+.toastVisible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Main content area ────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem 1.5rem 4rem;
+}
+
+/* ── Wide two-column panel ────────────────────────────────────── */
+.panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.09);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  width: 100%;
+  max-width: 980px;
+  overflow: hidden;
+}
+
+/* ── Left column ──────────────────────────────────────────────── */
+.leftCol {
+  padding: 3rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: #faf5ff;
+}
+
+/* Outlined "Have an account? Log In" card */
+.loginPrompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.125rem;
+  border: 1.5px solid #ddd6fe;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.loginPromptText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.loginPromptBtn {
+  padding: 0.45rem 1.125rem;
+  border: 2px solid #6b21a8;
+  border-radius: 6px;
+  color: #6b21a8;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.loginPromptBtn:hover {
+  background: #6b21a8;
+  color: #fff;
+}
+
+.loginPromptBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Large "Create An Account" heading */
+.createHeading {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1e1133;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Purple-checkmark benefits list */
+.benefitsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.benefitItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.benefitItem::before {
+  content: '✓';
+  color: #6b21a8;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1em;
+}
+
+/* Social buttons */
+.socialGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.socialBtn:hover {
+  border-color: #6b21a8;
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.1);
+}
+
+.socialBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.socialBtn:active { background: #f9fafb; }
+
+/* Legal / consent text */
+.legal {
+  font-size: 0.775rem;
+  line-height: 1.65;
+  color: #6b7280;
+  margin-top: auto;
+}
+
+.legalLink {
+  color: #6b21a8;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legalLink:hover { color: #7e22ce; }
+
+/* ── Vertical divider ─────────────────────────────────────────── */
+.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: #e5e7eb;
+}
+
+.dividerLabel {
+  position: relative;
+  background: #fff;
+  color: #9ca3af;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.375rem 0;
+  z-index: 1;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Right column ─────────────────────────────────────────────── */
+.rightCol {
+  padding: 3rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.signupHeading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e1133;
+  margin: 0 0 0.25rem;
+}
+
+/* Error banner */
+.errorBanner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+}
+
+/* Form layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Wide rectangular inputs — matches reference proportions */
+.input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #111827;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  appearance: none;
+}
+
+.input:focus {
+  border-color: #6b21a8;
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.12);
+}
+
+.input::placeholder { color: #9ca3af; }
+
+/* Password wrapper */
+.passwordWrap { position: relative; }
+
+.passwordWrap .input { padding-right: 2.75rem; }
+
+.eyeBtn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.eyeBtn:hover { color: #6b21a8; }
+
+.eyeBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* Large purple "Create Account" CTA */
+.createBtn {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.9375rem;
+  background: #6b21a8;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.createBtn:hover:not(:disabled) {
+  background: #7e22ce;
+  box-shadow: 0 4px 14px rgba(107, 33, 168, 0.35);
+}
+
+.createBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+.createBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mobile log-in hint — hidden on desktop */
+.mobileLogin {
+  display: none;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.mobileLoginLink {
+  color: #6b21a8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobileLoginLink:hover { text-decoration: underline; }
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .main { padding: 1.5rem 1rem 3rem; }
+
+  .panel {
+    grid-template-columns: 1fr;
+    border-radius: 12px;
+  }
+
+  /* Mobile order: form first, then divider, then social/benefits */
+  .rightCol  { order: 1; padding: 2rem 1.5rem 1.5rem; }
+  .divider   { order: 2; flex-direction: row; min-width: unset; padding: 0 1.5rem; min-height: 2.5rem; }
+
+  .divider::before {
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 1px;
+  }
+
+  .dividerLabel {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    padding: 0 0.5rem;
+  }
+
+  .leftCol { order: 3; padding: 1.75rem 1.5rem 2rem; }
+
+  .topBarNav { display: none; }
+
+  .mobileLogin { display: block; }
+
+  .createHeading { font-size: 1.5rem; }
+}

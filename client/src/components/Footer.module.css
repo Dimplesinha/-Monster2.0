@@ -1,0 +1,219 @@
+/* ── Footer shell ─────────────────────────────────────────────── */
+.footer {
+  background: #1e1133;
+  color: #c4b5fd;
+  margin-top: auto;
+}
+
+/* ── Locale selector row ──────────────────────────────────────── */
+.locale {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.875rem 2rem;
+}
+
+.localeInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  width: fit-content;
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: background 0.15s;
+}
+
+.localeInner:hover { background: rgba(255,255,255,0.06); }
+
+.localeIcon { font-size: 0.9rem; }
+
+.localeText {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #e9d5ff;
+}
+
+.localeChevron {
+  font-size: 0.75rem;
+  color: #c4b5fd;
+  margin-left: 0.125rem;
+}
+
+/* ── Main columns ─────────────────────────────────────────────── */
+.columns {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+}
+
+.col { display: flex; flex-direction: column; }
+
+.colHead {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #e9d5ff;
+  margin: 0 0 1rem;
+}
+
+.colList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.colLink {
+  font-size: 0.875rem;
+  color: #a78bfa;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.colLink:hover { color: #fff; }
+
+.colLink:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Social icons ─────────────────────────────────────────────── */
+.social {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.socialIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #c4b5fd;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.socialIcon:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: #c4b5fd;
+  color: #fff;
+}
+
+.socialIcon:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+/* ── App store buttons ────────────────────────────────────────── */
+.appBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+}
+
+.appBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+  max-width: 160px;
+}
+
+.appBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #c4b5fd;
+}
+
+.appBtn:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.appBtnLogo {
+  font-size: 1.125rem;
+  color: #e9d5ff;
+  flex-shrink: 0;
+}
+
+.appBtnText {
+  display: flex;
+  flex-direction: column;
+}
+
+.appBtnSub {
+  font-size: 0.65rem;
+  color: #a78bfa;
+  line-height: 1.2;
+}
+
+.appBtnStore {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #e9d5ff;
+  line-height: 1.3;
+}
+
+/* ── Bottom bar ───────────────────────────────────────────────── */
+.bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.copy {
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.bottomLinks {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.bottomLinks a {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.bottomLinks a:hover { color: #c4b5fd; }
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .columns { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+}
+
+@media (max-width: 560px) {
+  .columns { grid-template-columns: 1fr; padding: 2rem 1.25rem; }
+  .bottom { padding: 1rem 1.25rem; flex-direction: column; align-items: flex-start; }
+  .locale { padding: 0.75rem 1.25rem; }
+}
