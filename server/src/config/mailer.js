@@ -60,7 +60,11 @@ function createTransport() {
 }
 
 /* ── console log (dev / fallback) ────────────────────────────────── */
-function logCodeToConsole(to, code) {}
+function logCodeToConsole(to, code) {
+  console.log(`\n📧  [DEV] Verification code for: ${to}`);
+  console.log(`    Code : ${code}`);
+  console.log(`    Valid: 15 minutes\n`);
+}
 
 /* ── plain-text template ─────────────────────────────────────────── */
 function buildText(code) {
