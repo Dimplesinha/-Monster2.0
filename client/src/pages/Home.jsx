@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
+import api from '../api/axios';
 import styles from './Home.module.css';
 
 /* ── Data ────────────────────────────────────────────────────── */
@@ -10,31 +11,6 @@ const POPULAR_SEARCHES = [
   'Nurse', 'Project Manager', 'Sales', 'Warehouse', 'Welder',
 ];
 
-const ADVICE_FILTERS = ['Resume', 'Cover Letter', 'News & Market Insights', 'Interviews'];
-
-const ARTICLES = [
-  {
-    id: 1,
-    category: 'RESUME',
-    title: '7 Resume Mistakes That Cost You the Interview',
-    author: 'Career Editor',
-    date: 'May 2025',
-  },
-  {
-    id: 2,
-    category: 'INTERVIEWS',
-    title: 'How to Answer "Tell Me About Yourself" Confidently',
-    author: 'Career Editor',
-    date: 'April 2025',
-  },
-  {
-    id: 3,
-    category: 'COVER LETTER',
-    title: 'Write a Cover Letter That Gets Read — and Responded To',
-    author: 'Career Editor',
-    date: 'March 2025',
-  },
-];
 
 const JOB_CATEGORIES = [
   'Administrative', 'Customer Service', 'Engineering', 'Healthcare',
@@ -67,9 +43,22 @@ function ChipIcon() {
   );
 }
 
+const HOME_FILTERS = ['Resume', 'Cover Letter', 'News & Market Insights', 'Interviews'];
+
 /* ── Component ───────────────────────────────────────────────── */
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState('Resume');
+  const [allArticles, setAllArticles] = useState([]);
+  const [homeFilter, setHomeFilter] = useState(null); // null = All
+
+  useEffect(() => {
+    api.get('/articles')
+      .then(({ data }) => setAllArticles(data))
+      .catch(() => {});
+  }, []);
+
+  const displayedArticles = homeFilter
+    ? allArticles.filter((a) => a.category === homeFilter).slice(0, 6)
+    : allArticles.slice(0, 6);
 
   return (
     <main>
@@ -199,14 +188,21 @@ export default function Home() {
             Career Advice to Win Your Job Search
           </h2>
 
-          <div className={styles.adviceFilters} role="tablist" aria-label="Article categories">
-            {ADVICE_FILTERS.map((f) => (
+          {/* Category filter pills */}
+          <div className={styles.adviceFilters} role="group" aria-label="Filter articles by category">
+            <button
+              className={`${styles.filterPill} ${homeFilter === null ? styles.filterPillActive : ''}`}
+              onClick={() => setHomeFilter(null)}
+              aria-pressed={homeFilter === null}
+            >
+              All
+            </button>
+            {HOME_FILTERS.map((f) => (
               <button
                 key={f}
-                role="tab"
-                aria-selected={activeFilter === f}
-                className={`${styles.filterPill} ${activeFilter === f ? styles.filterPillActive : ''}`}
-                onClick={() => setActiveFilter(f)}
+                className={`${styles.filterPill} ${homeFilter === f ? styles.filterPillActive : ''}`}
+                onClick={() => setHomeFilter(homeFilter === f ? null : f)}
+                aria-pressed={homeFilter === f}
               >
                 {f}
               </button>
@@ -214,24 +210,47 @@ export default function Home() {
           </div>
 
           <div className={styles.adviceGrid}>
-            {ARTICLES.map((a) => (
-              <article key={a.id} className={styles.adviceCard}>
-                <div className={styles.adviceCardImg} aria-hidden="true" />
+            {displayedArticles.map((a) => (
+              <Link key={a.slug} to={`/career-advice/${a.slug}`} className={styles.adviceCard}>
+                {/* Card image */}
+                <div
+                  className={styles.adviceCardImg}
+                  style={{ backgroundImage: `url(${a.imageUrl})` }}
+                  role="img"
+                  aria-label={a.title}
+                />
                 <div className={styles.adviceCardBody}>
-                  <span className={styles.adviceCategory}>{a.category}</span>
+                  {/* Teal category */}
+                  <span className={styles.adviceCategory}>{a.category.toUpperCase()}</span>
+                  {/* Bold title */}
                   <h3 className={styles.adviceTitle}>{a.title}</h3>
-                  <div className={styles.adviceMeta}>
-                    <span>{a.author}</span>
-                    <span className={styles.adviceDot}>·</span>
-                    <span>{a.date}</span>
+                  {/* Divider */}
+                  <div className={styles.adviceDivider} aria-hidden="true" />
+                  {/* Author row */}
+                  <div className={styles.adviceAuthorRow}>
+                    <div className={styles.adviceAvatar}>
+                      <img
+                        src={a.authorAvatar}
+                        alt={a.author}
+                        className={styles.adviceAvatarImg}
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                      <span className={styles.adviceAvatarFallback} aria-hidden="true">
+                        {a.author.charAt(0)}
+                      </span>
+                    </div>
+                    <div className={styles.adviceAuthorInfo}>
+                      <span className={styles.adviceAuthorName}>{a.author}</span>
+                      <span className={styles.adviceContributor}>Contributor</span>
+                    </div>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
 
           <div className={styles.adviceCta}>
-            <Link to="/jobs" className={styles.adviceCtaBtn}>
+            <Link to="/career-advice" className={styles.adviceCtaBtn}>
               See All Career Advice
             </Link>
           </div>

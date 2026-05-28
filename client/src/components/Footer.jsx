@@ -2,7 +2,7 @@ import styles from './Footer.module.css';
 
 const SEEKERS = [
   { label: 'Find Jobs', href: '/jobs' },
-  { label: 'Career Advice', href: '#advice' },
+  { label: 'Career Advice', href: '/career-advice' },
   { label: 'Resume Templates', href: '#resume-templates' },
   { label: 'Resume Builder', href: '#resume-builder' },
   { label: 'Salary Tools', href: '#salary' },
