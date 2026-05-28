@@ -82,7 +82,14 @@ export default function Login() {
       await login(form.email, form.password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Check your credentials.');
+      const errData = err.response?.data;
+      // Backend returns needsVerification when account exists but email isn't confirmed
+      if (errData?.needsVerification) {
+        sessionStorage.setItem('pendingEmail', errData.email || form.email);
+        navigate('/confirm-email');
+        return;
+      }
+      setError(errData?.message || 'Login failed. Check your credentials.');
     } finally {
       setLoading(false);
     }
