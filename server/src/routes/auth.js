@@ -20,11 +20,13 @@ const { requireAuth } = require('../middleware/auth');
  * /auth/register:
  *   post:
  *     tags: [Auth]
- *     summary: Register a new user (email + password only)
+ *     summary: Register a new user (email + password)
  *     description: >
- *       Creates the account with emailVerified=false and logs a 6-digit code
- *       to the server console (demo mode). No JWT is returned here — the client
- *       must call /auth/verify-email to complete sign-up.
+ *       Creates the account with emailVerified=false and sends a 6-digit
+ *       verification code via SMTP.
+ *       When SMTP is not configured in development the code is printed to
+ *       the server console instead and the response message reflects this.
+ *       No JWT is issued — the client must call /auth/verify-email first.
  *     requestBody:
  *       required: true
  *       content:
@@ -38,9 +40,20 @@ const { requireAuth } = require('../middleware/auth');
  *               role:     { type: string, enum: [jobseeker, employer] }
  *     responses:
  *       201:
- *         description: Account created — verification code sent (logged to console in demo)
+ *         description: Account created — verification code sent to email (or console in dev)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message: { type: string }
+ *                 email:   { type: string }
+ *       400:
+ *         description: Missing email or password
  *       409:
  *         description: Email already registered
+ *       500:
+ *         description: Could not send verification email (production only)
  */
 router.post('/register', register);
 
@@ -103,6 +116,11 @@ router.post('/verify-email', verifyEmail);
  *   post:
  *     tags: [Auth]
  *     summary: Resend email verification code
+ *     description: >
+ *       Generates a fresh 6-digit code and sends it via SMTP.
+ *       In development without SMTP, the code is printed to the console.
+ *       Returns a generic 200 regardless of whether the address is registered
+ *       (prevents email enumeration).
  *     requestBody:
  *       required: true
  *       content:
@@ -114,7 +132,9 @@ router.post('/verify-email', verifyEmail);
  *               email: { type: string, format: email }
  *     responses:
  *       200:
- *         description: New code sent (logged to console in demo)
+ *         description: Code sent (or logged to console in dev without SMTP)
+ *       500:
+ *         description: Could not send verification email (production only)
  */
 router.post('/resend-verification', resendVerification);
 

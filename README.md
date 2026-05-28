@@ -49,7 +49,7 @@ cp client/.env.example client/.env
 
 # server
 cp server/.env.example server/.env
-# → fill in MONGODB_URI and JWT_SECRET
+# → fill in MONGODB_URI, JWT_SECRET, and (optionally) SMTP vars
 ```
 
 ### 3. Run locally
@@ -62,7 +62,46 @@ cd server && npm run dev    # http://localhost:5000
 cd client && npm run dev    # http://localhost:3000
 ```
 
-### 4. API Docs
+### 4. Email Setup (optional for development)
+
+The signup flow sends a **6-digit verification code** to the user's email.
+
+**Development (no SMTP configured)**
+Leave `SMTP_HOST`, `SMTP_USER`, and `SMTP_PASS` empty in `server/.env`.
+The server will print the code to the terminal instead:
+```
+📧  [DEV] Verification code for: user@example.com
+    Code : 482917
+    Valid: 15 minutes
+```
+Copy the code from the terminal and paste it into the Confirm Email screen.
+
+**Production / real email (free Gmail App Password)**
+
+1. Enable **2-Step Verification** on your Google account:  
+   <https://myaccount.google.com/security>
+
+2. Create an **App Password**:  
+   myaccount.google.com → Security → App passwords → Mail → Generate  
+   Copy the 16-character password (spaces are optional).
+
+3. Set these vars in `server/.env`:
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_16_char_app_password
+SMTP_FROM="Monster <your_email@gmail.com>"
+EMAIL_DEV_LOG=true
+```
+
+4. Restart the server — users will now receive real emails.
+
+> **Note:** `EMAIL_DEV_LOG=true` keeps console logging active even when SMTP is configured, useful during development. Set it to `false` in production if you prefer quieter logs.
+
+### 5. API Docs
 
 With the server running: [http://localhost:5000/api/docs](http://localhost:5000/api/docs)
 

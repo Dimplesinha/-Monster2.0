@@ -1,3 +1,5 @@
+'use strict';
+
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { sendVerificationEmail } = require('../config/mailer');
@@ -26,8 +28,11 @@ function generateCode() {
 }
 
 /* ── register ────────────────────────────────────────────────────── */
-// Creates the account, stores a 6-digit code, and returns {message, email}.
-// No JWT is issued here — the user must verify their email first.
+/**
+ * POST /auth/register
+ * Creates the account, stores a 6-digit verification code, and sends
+ * it to the user's email.  No JWT is issued until the code is verified.
+ */
 exports.register = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
@@ -39,12 +44,10 @@ exports.register = async (req, res, next) => {
       return res.status(409).json({ message: 'Email already registered' });
     }
 
-    const code    = generateCode();
-    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 min
-
-    // Derive a display name from the supplied name or the email prefix
+    const code      = generateCode();
+    const expires   = new Date(Date.now() + 15 * 60 * 1000); // 15 min
     const displayName = (name || '').trim() || email.split('@')[0];
-    const userRole    = role === 'employer' ? 'employer' : 'jobseeker';
+    const userRole  = role === 'employer' ? 'employer' : 'jobseeker';
 
     await User.create({
       name: displayName,
@@ -56,23 +59,34 @@ exports.register = async (req, res, next) => {
       emailVerificationExpires: expires,
     });
 
-    // Send verification email (falls back to console warning if transport fails)
-    await sendVerificationEmail(email, code);
+    // ── Send verification email ────────────────────────────────────
+    let emailResult;
+    try {
+      emailResult = await sendVerificationEmail(email, code);
+    } catch (emailErr) {
+      // Production: SMTP absent or send failed → 500
+      console.error(`[register] Email failure for ${email}:`, emailErr.message);
+      return res.status(500).json({
+        message: 'Could not send verification email. Please try again later.',
+      });
+    }
 
-    res.status(201).json({
-      message: 'Registration successful. Please check your email for a 6-digit verification code.',
-      email,
-    });
+    const message = emailResult.dev
+      ? 'Registration successful. SMTP is not configured — your verification code has been printed to the server console.'
+      : 'Registration successful. Please check your email for a 6-digit verification code.';
+
+    res.status(201).json({ message, email });
   } catch (err) {
     next(err);
   }
 };
 
 /* ── login ───────────────────────────────────────────────────────── */
-// Blocks login if email has not been verified yet.
-// Legacy accounts (created before email-verification was added) have no
-// verification code stored — they are auto-verified on first login so they
-// aren't locked out.
+/**
+ * POST /auth/login
+ * Returns a JWT.  Blocks unverified accounts (403 needsVerification).
+ * Legacy accounts (no code stored) are auto-verified on first login.
+ */
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -84,14 +98,12 @@ exports.login = async (req, res, next) => {
     }
 
     if (!user.emailVerified) {
-      // No code means this is a legacy account that pre-dates email verification.
-      // Auto-verify so the user isn't permanently locked out.
+      // No code → legacy account created before email-verification existed
       if (!user.emailVerificationCode) {
         await User.updateOne({ _id: user._id }, { $set: { emailVerified: true } });
         const verifiedUser = await User.findById(user._id);
         return res.json({ token: signToken(verifiedUser), user: safeUser(verifiedUser) });
       }
-
       return res.status(403).json({
         message: 'Please verify your email before logging in.',
         needsVerification: true,
@@ -117,7 +129,10 @@ exports.me = async (req, res, next) => {
 };
 
 /* ── verifyEmail ─────────────────────────────────────────────────── */
-// Validates the 6-digit code, marks the account verified, and returns a JWT.
+/**
+ * POST /auth/verify-email
+ * Validates the 6-digit code, marks the account verified, and returns a JWT.
+ */
 exports.verifyEmail = async (req, res, next) => {
   try {
     const { email, code } = req.body;
@@ -131,12 +146,10 @@ exports.verifyEmail = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Already verified — just issue the token
+    // Already verified — issue token immediately
     if (user.emailVerified) {
       return res.json({ token: signToken(user), user: safeUser(user) });
     }
-
     if (user.emailVerificationCode !== code) {
       return res.status(400).json({ message: 'Invalid verification code' });
     }
@@ -146,7 +159,6 @@ exports.verifyEmail = async (req, res, next) => {
       });
     }
 
-    // Mark verified and clear the one-time code
     await User.updateOne(
       { _id: user._id },
       {
@@ -163,7 +175,10 @@ exports.verifyEmail = async (req, res, next) => {
 };
 
 /* ── resendVerification ──────────────────────────────────────────── */
-// Generates a fresh 6-digit code for an unverified account.
+/**
+ * POST /auth/resend-verification
+ * Generates a fresh 6-digit code and emails it.
+ */
 exports.resendVerification = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -173,7 +188,7 @@ exports.resendVerification = async (req, res, next) => {
 
     const user = await User.findOne({ email });
 
-    // Generic response — avoids leaking whether the address is registered
+    // Generic reply — avoids revealing whether the address is registered
     if (!user || user.emailVerified) {
       return res.json({
         message: 'If that email is registered and unverified, a new code has been sent.',
@@ -188,7 +203,15 @@ exports.resendVerification = async (req, res, next) => {
       { $set: { emailVerificationCode: code, emailVerificationExpires: expires } }
     );
 
-    await sendVerificationEmail(email, code);
+    // ── Send verification email ────────────────────────────────────
+    try {
+      await sendVerificationEmail(email, code);
+    } catch (emailErr) {
+      console.error(`[resend] Email failure for ${email}:`, emailErr.message);
+      return res.status(500).json({
+        message: 'Could not send verification email. Please try again later.',
+      });
+    }
 
     res.json({ message: 'A new verification code has been sent to your email.' });
   } catch (err) {
