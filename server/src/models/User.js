@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true, select: false },
     role: { type: String, enum: ['jobseeker', 'employer', 'admin'], default: 'jobseeker' },
+    // Email verification — code is hidden from normal queries
+    emailVerified:            { type: Boolean, default: false },
+    emailVerificationCode:    { type: String,  select: false },
+    emailVerificationExpires: { type: Date,    select: false },
   },
   { timestamps: true }
 );

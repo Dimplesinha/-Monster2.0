@@ -6,7 +6,11 @@ import styles from './Navbar.module.css';
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [promoVisible, setPromoVisible] = useState(true);
+
+  // Persist dismiss across page navigations for the current browser session
+  const [promoVisible, setPromoVisible] = useState(
+    () => sessionStorage.getItem('promoHidden') !== '1'
+  );
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
@@ -14,6 +18,15 @@ export default function Navbar() {
     navigate('/');
     setMobileOpen(false);
   };
+
+  const handlePromoClose = () => {
+    sessionStorage.setItem('promoHidden', '1');
+    setPromoVisible(false);
+  };
+
+  // "Employers / Post Job" routes to the dashboard if already an employer,
+  // otherwise sends new visitors to the employer registration page.
+  const postJobPath = user?.role === 'employer' ? '/post-job' : '/employer/register';
 
   return (
     <header className={styles.root}>
@@ -25,13 +38,13 @@ export default function Navbar() {
             <span className={styles.promoText}>
               Hire candidates with flexible plans.
             </span>
-            <Link to="/register?role=employer" className={styles.promoLink}>
+            <Link to="/employer/register" className={styles.promoLink}>
               SIGN UP WITH MONSTER+ →
             </Link>
           </div>
           <button
             className={styles.promoClose}
-            onClick={() => setPromoVisible(false)}
+            onClick={handlePromoClose}
             aria-label="Dismiss promotion"
           >
             ✕
@@ -123,13 +136,14 @@ export default function Navbar() {
               </>
             )}
             <li className={styles.mobileOnly}>
-              <Link to="/post-job" onClick={() => setMobileOpen(false)}>
+              <Link to={postJobPath} onClick={() => setMobileOpen(false)}>
                 Employers / Post Job
               </Link>
             </li>
           </ul>
 
-          <Link to="/post-job" className={styles.postJobLink}>
+          {/* Logged-in employers go straight to /post-job; guests go to /employer/register */}
+          <Link to={postJobPath} className={styles.postJobLink}>
             Employers / Post Job →
           </Link>
         </div>

@@ -7,11 +7,13 @@ import Jobs from './pages/Jobs';
 import JobDetail from './pages/JobDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import EmployerRegister from './pages/EmployerRegister';
+import ConfirmEmail from './pages/ConfirmEmail';
 import Dashboard from './pages/Dashboard';
 import PostJob from './pages/PostJob';
 import NotFound from './pages/NotFound';
 
-const NO_SHELL = ['/login', '/register'];
+const NO_SHELL = ['/login', '/register', '/employer/register', '/confirm-email'];
 
 export default function App() {
   const { pathname } = useLocation();
@@ -25,6 +27,8 @@ export default function App() {
         <Route path="/jobs/:id" element={<JobDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/employer/register" element={<EmployerRegister />} />
+        <Route path="/confirm-email" element={<ConfirmEmail />} />
         <Route
           path="/dashboard"
           element={

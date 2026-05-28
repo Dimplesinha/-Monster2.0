@@ -1,5 +1,11 @@
 const router = require('express').Router();
-const { register, login, me } = require('../controllers/authController');
+const {
+  register,
+  login,
+  me,
+  verifyEmail,
+  resendVerification,
+} = require('../controllers/authController');
 const { requireAuth } = require('../middleware/auth');
 
 /**
@@ -14,22 +20,25 @@ const { requireAuth } = require('../middleware/auth');
  * /auth/register:
  *   post:
  *     tags: [Auth]
- *     summary: Register a new user
+ *     summary: Register a new user (email + password only)
+ *     description: >
+ *       Creates the account with emailVerified=false and logs a 6-digit code
+ *       to the server console (demo mode). No JWT is returned here — the client
+ *       must call /auth/verify-email to complete sign-up.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name, email, password]
+ *             required: [email, password]
  *             properties:
- *               name: { type: string }
- *               email: { type: string, format: email }
+ *               email:    { type: string, format: email }
  *               password: { type: string, minLength: 8 }
- *               role: { type: string, enum: [jobseeker, employer] }
+ *               role:     { type: string, enum: [jobseeker, employer] }
  *     responses:
  *       201:
- *         description: User created
+ *         description: Account created — verification code sent (logged to console in demo)
  *       409:
  *         description: Email already registered
  */
@@ -41,6 +50,7 @@ router.post('/register', register);
  *   post:
  *     tags: [Auth]
  *     summary: Log in and receive a JWT
+ *     description: Returns 403 with needsVerification=true if email is not yet verified.
  *     requestBody:
  *       required: true
  *       content:
@@ -49,15 +59,64 @@ router.post('/register', register);
  *             type: object
  *             required: [email, password]
  *             properties:
- *               email: { type: string }
+ *               email:    { type: string }
  *               password: { type: string }
  *     responses:
  *       200:
- *         description: JWT token
+ *         description: JWT token + safe user object
  *       401:
  *         description: Invalid credentials
+ *       403:
+ *         description: Email not verified
  */
 router.post('/login', login);
+
+/**
+ * @swagger
+ * /auth/verify-email:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Verify email with 6-digit code
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, code]
+ *             properties:
+ *               email: { type: string, format: email }
+ *               code:  { type: string, minLength: 6, maxLength: 6 }
+ *     responses:
+ *       200:
+ *         description: Verified — returns JWT + user
+ *       400:
+ *         description: Invalid or expired code
+ *       404:
+ *         description: User not found
+ */
+router.post('/verify-email', verifyEmail);
+
+/**
+ * @swagger
+ * /auth/resend-verification:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Resend email verification code
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email]
+ *             properties:
+ *               email: { type: string, format: email }
+ *     responses:
+ *       200:
+ *         description: New code sent (logged to console in demo)
+ */
+router.post('/resend-verification', resendVerification);
 
 /**
  * @swagger
@@ -69,7 +128,7 @@ router.post('/login', login);
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: User object
+ *         description: Safe user object
  */
 router.get('/me', requireAuth, me);
 
