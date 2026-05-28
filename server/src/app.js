@@ -10,6 +10,7 @@ const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
+const articleRoutes = require('./routes/articles');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/articles', articleRoutes);
 
 /* Health */
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));

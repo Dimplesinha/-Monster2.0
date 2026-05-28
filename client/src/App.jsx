@@ -5,6 +5,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Jobs from './pages/Jobs';
 import JobDetail from './pages/JobDetail';
+import CareerAdvice from './pages/CareerAdvice';
+import ArticleDetail from './pages/ArticleDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import EmployerRegister from './pages/EmployerRegister';
@@ -25,6 +27,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/:id" element={<JobDetail />} />
+        <Route path="/career-advice" element={<CareerAdvice />} />
+        <Route path="/career-advice/:slug" element={<ArticleDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/employer/register" element={<EmployerRegister />} />

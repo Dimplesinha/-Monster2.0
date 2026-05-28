@@ -110,9 +110,9 @@ export default function Navbar() {
               </a>
             </li>
             <li>
-              <a href="#advice" onClick={() => setMobileOpen(false)}>
+              <Link to="/career-advice" onClick={() => setMobileOpen(false)}>
                 Career Advice
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#resume-templates" onClick={() => setMobileOpen(false)}>
