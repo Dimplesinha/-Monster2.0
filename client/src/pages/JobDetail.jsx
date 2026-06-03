@@ -2,11 +2,29 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useSavedJobs } from '../context/SavedJobsContext';
 import styles from './JobDetail.module.css';
+
+function HeartIcon({ filled }) {
+  return filled ? (
+    <svg viewBox="0 0 24 24" fill="#e11d48" stroke="#e11d48" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: 20, height: 20 }}>
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: 20, height: 20 }}>
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  );
+}
 
 export default function JobDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { isSaved, toggleSave } = useSavedJobs();
+  const isJobseeker = user?.role === 'jobseeker';
+  const saved = isSaved(id);
   const [job,        setJob]        = useState(null);
   const [loading,    setLoading]    = useState(true);
   const [applied,    setApplied]    = useState(false);
@@ -54,10 +72,21 @@ export default function JobDetail() {
       <article className={styles.card}>
         <header className={styles.header}>
           <div className={styles.logo}>{job.company?.charAt(0)}</div>
-          <div>
+          <div className={styles.headerText}>
             <h1 className={styles.title}>{job.title}</h1>
             <p className={styles.company}>{job.company}</p>
           </div>
+          {isJobseeker && (
+            <button
+              className={`${styles.saveBtn} ${saved ? styles.saveBtnActive : ''}`}
+              onClick={() => toggleSave(id)}
+              aria-label={saved ? 'Unsave job' : 'Save job'}
+              title={saved ? 'Remove from saved jobs' : 'Save this job'}
+            >
+              <HeartIcon filled={saved} />
+              <span>{saved ? 'Saved' : 'Save'}</span>
+            </button>
+          )}
         </header>
 
         <div className={styles.meta}>

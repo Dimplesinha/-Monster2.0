@@ -505,6 +505,26 @@
   color: #b91c1c;
 }
 
+/* Heart icon badge (saved jobs count) */
+.navBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: #e11d48;
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 800;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  pointer-events: none;
+}
+
 .dropdownBadge {
   margin-left: auto;
   background: #6d28d9;

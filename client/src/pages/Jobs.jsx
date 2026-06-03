@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useSavedJobs } from '../context/SavedJobsContext';
 import SearchBar from '../components/SearchBar';
 import QuickApplyModal from '../components/QuickApplyModal';
 import styles from './Jobs.module.css';
@@ -236,6 +237,7 @@ function JobDetail({ job, applied, onQuickApply, isLoggedIn }) {
 export default function Jobs() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
+  const { isSaved, toggleSave } = useSavedJobs();
 
   const keyword  = searchParams.get('q')        || '';
   const location = searchParams.get('location') || '';
@@ -249,8 +251,7 @@ export default function Jobs() {
   const [totalPages, setTotalPages]   = useState(1);
   const [total, setTotal]             = useState(0);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [applyJob, setApplyJob]       = useState(null);   // job to open modal for
-  const [savedIds, setSavedIds]       = useState(new Set());
+  const [applyJob, setApplyJob]       = useState(null);
   const [appliedIds, setAppliedIds]   = useState(new Set());
 
   // ── Fetch jobs ──────────────────────────────────────────────
@@ -285,12 +286,8 @@ export default function Jobs() {
 
   // ── Handlers ────────────────────────────────────────────────
   const handleSave = useCallback((jobId) => {
-    setSavedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(jobId)) next.delete(jobId); else next.add(jobId);
-      return next;
-    });
-  }, []);
+    toggleSave(jobId);
+  }, [toggleSave]);
 
   const handleApplySuccess = useCallback((jobId) => {
     setAppliedIds((prev) => new Set([...prev, jobId]));
@@ -377,7 +374,7 @@ export default function Jobs() {
               key={job._id}
               job={job}
               selected={selectedJob?._id === job._id}
-              saved={savedIds.has(job._id)}
+              saved={isSaved(job._id)}
               applied={appliedIds.has(job._id)}
               onSelect={setSelectedJob}
               onSave={handleSave}

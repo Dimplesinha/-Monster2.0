@@ -29,6 +29,7 @@ import BlogsListPage from './pages/BlogsListPage';
 import BlogEditorPage from './pages/BlogEditorPage';
 import BlogsPublicPage from './pages/BlogsPublicPage';
 import PublicBlogPage from './pages/PublicBlogPage';
+import SavedJobsPage from './pages/SavedJobsPage';
 import NotFound from './pages/NotFound';
 
 // Exact paths that suppress the jobseeker Navbar & Footer
@@ -160,6 +161,14 @@ export default function App() {
           element={
             <ProtectedRoute roles={['jobseeker']}>
               <MyApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/saved-jobs"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <SavedJobsPage />
             </ProtectedRoute>
           }
         />

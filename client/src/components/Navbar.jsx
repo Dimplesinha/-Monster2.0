@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useSavedJobs } from '../context/SavedJobsContext';
 import { nextOnboardingStep } from '../hooks/useOnboarding';
 import styles from './Navbar.module.css';
 
@@ -119,6 +120,11 @@ function ProfileDropdown({ user, onClose, onLogout, navigate }) {
         <span>My Applications</span>
       </button>
 
+      <button className={styles.dropdownItem} onClick={() => go('/saved-jobs')} role="menuitem">
+        <HeartIcon />
+        <span>Saved Jobs</span>
+      </button>
+
       <button className={styles.dropdownItem} onClick={() => go('/my-blogs')} role="menuitem">
         <PenIcon />
         <span>My Blogs</span>
@@ -146,6 +152,7 @@ function ProfileDropdown({ user, onClose, onLogout, navigate }) {
 /* ── Navbar ─────────────────────────────────────────────────────── */
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { count: savedCount } = useSavedJobs();
   const navigate  = useNavigate();
   const location  = useLocation();
 
@@ -212,6 +219,22 @@ export default function Navbar() {
           {isJobseeker ? (
             /* ── Jobseeker icon bar ─────────────────────────────── */
             <div className={styles.iconBar}>
+
+              {/* Saved Jobs */}
+              <button
+                className={styles.iconBtn}
+                onClick={() => navigate('/saved-jobs')}
+                aria-label="Saved jobs"
+                title="Saved Jobs"
+                style={{ position: 'relative' }}
+              >
+                <HeartIcon />
+                {savedCount > 0 && (
+                  <span className={styles.navBadge} aria-label={`${savedCount} saved jobs`}>
+                    {savedCount > 99 ? '99+' : savedCount}
+                  </span>
+                )}
+              </button>
 
               {/* My Blogs */}
               <button
@@ -313,6 +336,11 @@ export default function Navbar() {
                 <li className={styles.mobileOnly}>
                   <button className={styles.mobileProfileBtn} onClick={() => { navigate('/profile'); setMobileOpen(false); }}>
                     My Profile
+                  </button>
+                </li>
+                <li className={styles.mobileOnly}>
+                  <button className={styles.mobileProfileBtn} onClick={() => { navigate('/saved-jobs'); setMobileOpen(false); }}>
+                    Saved Jobs {savedCount > 0 && `(${savedCount})`}
                   </button>
                 </li>
                 <li className={styles.mobileOnly}>
