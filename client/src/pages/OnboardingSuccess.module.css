@@ -1,0 +1,133 @@
+/* ── Page shell ─────────────────────────────────────────────────── */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f0f0f0;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+/* ── Card ────────────────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.08);
+  padding: 3.5rem 3rem 3rem;
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+/* ── Illustration ────────────────────────────────────────────────── */
+.illustration {
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 16px rgba(107, 33, 168, 0.18));
+}
+
+/* ── Text ────────────────────────────────────────────────────────── */
+.textBlock {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.successLabel {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.heading {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.subtext {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0;
+  line-height: 1.5;
+}
+
+/* ── Search button ───────────────────────────────────────────────── */
+.searchBtn {
+  width: 100%;
+  padding: 1.125rem 2rem;
+  background: #6b21a8;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 0.01em;
+}
+
+.searchBtn:hover {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.searchBtn:active {
+  transform: translateY(0);
+}
+
+.searchBtn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+.searchIcon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .card {
+    padding: 2.5rem 1.5rem 2rem;
+    border-radius: 16px;
+    gap: 1.25rem;
+  }
+
+  .illustration {
+    width: 140px;
+    height: 140px;
+  }
+
+  .successLabel,
+  .heading {
+    font-size: 1.375rem;
+  }
+
+  .searchBtn {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}

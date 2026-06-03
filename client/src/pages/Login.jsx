@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { nextOnboardingStep } from '../hooks/useOnboarding';
 import styles from './Login.module.css';
 
 /* ── inline SVG icons ─────────────────────────────────────────── */
@@ -79,8 +80,11 @@ export default function Login() {
     setError('');
     setLoading(true);
     try {
-      await login(form.email, form.password);
-      navigate(from, { replace: true });
+      const loggedInUser = await login(form.email, form.password);
+      // Jobseekers with incomplete onboarding go to their next step;
+      // everyone else goes to where they came from (or home).
+      const nextStep = nextOnboardingStep(loggedInUser);
+      navigate(nextStep || from, { replace: true });
     } catch (err) {
       const errData = err.response?.data;
       // Backend returns needsVerification when account exists but email isn't confirmed

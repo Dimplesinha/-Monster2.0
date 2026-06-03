@@ -1,0 +1,68 @@
+.page {
+  min-height: calc(100vh - 120px);
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.iconWrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #f3e8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6d28d9;
+  margin-bottom: 0.5rem;
+}
+
+.iconWrap svg {
+  width: 36px;
+  height: 36px;
+}
+
+.title {
+  font-size: 1.625rem;
+  font-weight: 900;
+  color: #111827;
+  margin: 0;
+}
+
+.sub {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 380px;
+}
+
+.browseBtn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.75rem;
+  background: #6d28d9;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.browseBtn:hover { background: #5b21b6; }

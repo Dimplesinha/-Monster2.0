@@ -1,0 +1,456 @@
+/* ══════════════════════════════════════════════════════════════════
+   CandidateProfile — matches reference screenshot style
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Page shell ─────────────────────────────────────────────────── */
+.pageWrapper {
+  min-height: calc(100vh - 120px);
+  background: #f3f4f6;
+}
+
+/* ── Candidate sub-nav ───────────────────────────────────────────── */
+.subNav {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 120px; /* sits below the main 2-row navbar (~120px) */
+  z-index: 50;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.subNav::-webkit-scrollbar { display: none; }
+
+.subNavInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  white-space: nowrap;
+}
+
+.subNavItem {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.subNavItem:hover {
+  color: #111827;
+}
+
+.subNavActive {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+  font-weight: 700;
+}
+
+.subNavIcon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.subNavIcon svg { width: 16px; height: 16px; }
+
+.subNavLabel { line-height: 1; }
+
+/* ── Page container ──────────────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 4rem;
+}
+
+.pageTitle {
+  font-size: 1.625rem;
+  font-weight: 900;
+  color: #111827;
+  margin: 0 0 1.5rem;
+}
+
+/* ── Layout: sidebar + main ──────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+.sidebar { position: sticky; top: 178px; }
+
+.identityCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  position: relative;
+}
+
+.identityEdit {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  color: #0d9488;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+}
+.identityEdit:hover { background: #f0fdfb; }
+
+/* Square avatar — initials on dark slate */
+.avatarSquare {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: #374151;
+  color: #fff;
+  font-size: 1.375rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.identityInfo {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.identityGreeting {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.identityTitle {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.identityLocation {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ── Main content ────────────────────────────────────────────────── */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── White section card ──────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.cardTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── ADD button (light purple) ───────────────────────────────────── */
+.addBtn {
+  padding: 0.3rem 0.875rem;
+  background: #f3e8ff;
+  color: #6b21a8;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  transition: background 0.15s;
+}
+.addBtn:hover { background: #ede9fe; }
+
+/* ── Icon action buttons (pencil / trash) ────────────────────────── */
+.iconActionBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+  color: #0d9488;
+}
+.iconActionBtn:hover { background: #f0fdfb; }
+
+.pencilIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.trashIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Card body ───────────────────────────────────────────────────── */
+.cardBody {
+  padding: 1rem 1.25rem;
+}
+
+.cardBodyNoPad {
+  padding: 0;
+}
+
+/* ── Contact block ───────────────────────────────────────────────── */
+.contactBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.contactLine {
+  font-size: 0.9rem;
+  color: #111827;
+  margin: 0;
+}
+
+/* ── Resume chip ─────────────────────────────────────────────────── */
+.resumeChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.resumeFilename {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.downloadIcon {
+  width: 20px;
+  height: 20px;
+  color: #0d9488;
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+}
+
+.resumeUpdated {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  margin: 0.5rem 0 0;
+}
+
+/* ── Work Authorization badge ────────────────────────────────────── */
+.authBadge {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+.authBadge[data-auth="true"]  { color: #16a34a; }
+.authBadge[data-auth="false"] { color: #dc2626; }
+
+/* ── Visibility label ────────────────────────────────────────────── */
+.visLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+}
+.visLabel[data-vis="visible"]      { color: #16a34a; }
+.visLabel[data-vis="hide_contact"] { color: #d97706; }
+.visLabel[data-vis="not_visible"]  { color: #dc2626; }
+
+/* ── Two-column row (Contact + Location) ─────────────────────────── */
+.twoColRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Additional info row (Visibility + Job Prefs) ────────────────── */
+.additionalRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Empty section ───────────────────────────────────────────────── */
+.emptySection {
+  padding: 0.25rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.emptySection + .emptySection { margin-top: 0.5rem; }
+
+.emptySectionText {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.emptySectionBtn {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+.emptySectionBtn:hover { color: #6b21a8; }
+
+/* ── Summary text ────────────────────────────────────────────────── */
+.summaryText {
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.65;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ── Skills chips ────────────────────────────────────────────────── */
+.skillsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skillChip {
+  display: inline-block;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* ── Work experience / education entries ─────────────────────────── */
+.expList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.expEntry {
+  padding: 0.875rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.expEntry:last-child { border-bottom: none; }
+
+.expHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.expTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.expDates {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.expCompany {
+  font-size: 0.875rem;
+  color: #374151;
+  margin: 0 0 0.25rem;
+}
+
+.expDesc {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .identityCard {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .identityInfo { text-align: left; }
+}
+
+@media (max-width: 640px) {
+  .container { padding: 1.25rem 0.875rem 3rem; }
+  .twoColRow,
+  .additionalRow { grid-template-columns: 1fr; }
+  .subNav { top: 112px; }
+  .pageTitle { font-size: 1.375rem; }
+}
