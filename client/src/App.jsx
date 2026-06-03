@@ -30,6 +30,9 @@ import BlogEditorPage from './pages/BlogEditorPage';
 import BlogsPublicPage from './pages/BlogsPublicPage';
 import PublicBlogPage from './pages/PublicBlogPage';
 import SavedJobsPage from './pages/SavedJobsPage';
+import SalaryCalculator from './pages/SalaryCalculator';
+import SalaryResult from './pages/SalaryResult';
+import SalaryAdmin from './pages/SalaryAdmin';
 import NotFound from './pages/NotFound';
 
 // Exact paths that suppress the jobseeker Navbar & Footer
@@ -43,8 +46,9 @@ const NO_SHELL_EXACT = [
 
 // Prefix-based: any path under these prefixes also hides the jobseeker shell
 const NO_SHELL_PREFIX = [
-  '/employer/',   // /employer/register, /employer/pricing, /employer/onboarding, /employer/jobs/:id, /employer/blogs
-  '/my-blogs/',   // /my-blogs/new, /my-blogs/:id/edit  (editor has own header)
+  '/employer/',       // /employer/register, /employer/pricing, /employer/onboarding, /employer/jobs/:id, /employer/blogs
+  '/my-blogs/',       // /my-blogs/new, /my-blogs/:id/edit  (editor has own header)
+  '/admin/',          // /admin/salary-data (admin standalone pages)
 ];
 
 export default function App() {
@@ -233,6 +237,20 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        {/* ── Salary Calculator ───────────────────────────────── */}
+        <Route path="/salary-calculator"        element={<SalaryCalculator />} />
+        <Route path="/salary-calculator/result" element={<SalaryResult />} />
+
+        {/* ── Admin ───────────────────────────────────────────── */}
+        <Route
+          path="/admin/salary-data"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <SalaryAdmin />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!hideShell && <Footer />}

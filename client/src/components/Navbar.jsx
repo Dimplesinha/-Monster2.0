@@ -318,7 +318,7 @@ export default function Navbar() {
 
           <ul id="main-nav-links" className={`${styles.navLinks} ${mobileOpen ? styles.navOpen : ''}`}>
             <li><Link to="/jobs">Find Jobs</Link></li>
-            <li><a href="#salary">Salary Tools</a></li>
+            <li><Link to="/salary-calculator">Salary Tools</Link></li>
             <li><Link to="/career-advice">Career Advice</Link></li>
             <li><Link to="/blogs">Community Blogs</Link></li>
             <li><a href="#resume-templates">Free Resume Templates</a></li>

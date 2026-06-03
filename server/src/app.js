@@ -14,6 +14,7 @@ const articleRoutes = require('./routes/articles');
 const userRoutes = require('./routes/users');
 const blogRoutes      = require('./routes/blogs');
 const savedJobRoutes  = require('./routes/savedJobs');
+const salaryRoutes    = require('./routes/salary');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/blogs',      blogRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
+app.use('/api/salary',    salaryRoutes);
 
 /* Health */
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
