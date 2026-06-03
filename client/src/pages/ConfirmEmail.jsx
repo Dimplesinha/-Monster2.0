@@ -7,23 +7,24 @@ export default function ConfirmEmail() {
   const { verifyEmail, resendVerification } = useAuth();
   const navigate = useNavigate();
 
-  // Email is stored by Register / EmployerRegister / Login (needsVerification path)
-  const email = sessionStorage.getItem('pendingEmail') || '';
+  const email       = sessionStorage.getItem('pendingEmail') || '';
+  const pendingRole = sessionStorage.getItem('pendingRole')  || 'jobseeker';
 
-  const [code, setCode]             = useState('');
-  const [error, setError]           = useState('');
-  const [loading, setLoading]       = useState(false);
-  const [resendMsg, setResendMsg]   = useState('');
+  const [code, setCode]           = useState('');
+  const [error, setError]         = useState('');
+  const [loading, setLoading]     = useState(false);
+  const [resendMsg, setResendMsg] = useState('');
   const [resendLoading, setResendLoading] = useState(false);
   const resendTimer = useRef(null);
 
-  // Guard: if there's no pending email, there's nothing to confirm
   useEffect(() => {
-    if (!email) navigate('/register', { replace: true });
+    if (!email) {
+      // No pending email — send to the right registration page
+      navigate(pendingRole === 'employer' ? '/employer/register' : '/register', { replace: true });
+    }
     return () => clearTimeout(resendTimer.current);
-  }, [email, navigate]);
+  }, [email, navigate, pendingRole]);
 
-  /* ── confirm submission ───────────────────────────────────────── */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -31,24 +32,25 @@ export default function ConfirmEmail() {
     try {
       const user = await verifyEmail(email, code.trim());
       sessionStorage.removeItem('pendingEmail');
-      navigate(user.role === 'employer' ? '/dashboard' : '/jobs', { replace: true });
+      sessionStorage.removeItem('pendingRole');
+      if (user.role === 'employer') {
+        navigate('/employer/onboarding', { replace: true });
+      } else {
+        navigate('/resume-upload', { replace: true });
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        'That code didn\'t work. Please check and try again.'
-      );
+      setError(err.response?.data?.message || "That code didn't work. Please check and try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  /* ── resend ───────────────────────────────────────────────────── */
   const handleResend = async () => {
     setResendMsg('');
     setResendLoading(true);
     try {
       const data = await resendVerification(email);
-      setResendMsg(data.message || 'A new code has been sent.');
+      setResendMsg(data.message || 'A new code has been sent to your email.');
       clearTimeout(resendTimer.current);
       resendTimer.current = setTimeout(() => setResendMsg(''), 5000);
     } catch {
@@ -58,63 +60,30 @@ export default function ConfirmEmail() {
     }
   };
 
-  /* ── only allow digits, max 6 chars ──────────────────────────── */
   const handleCodeChange = (e) =>
     setCode(e.target.value.replace(/\D/g, '').slice(0, 6));
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={styles.page}>
 
-      {/* ── Dark purple top bar ───────────────────────────────────── */}
-      <header className={styles.topBar}>
-        <Link to="/" className={styles.logo} aria-label="Monster home">
-          Monster
-        </Link>
-        <span className={styles.topBarTitle}>Confirm Email</span>
-      </header>
-
-      {/* ── Centered card ─────────────────────────────────────────── */}
+      {/* ── Main ──────────────────────────────────────────────── */}
       <main className={styles.main}>
         <div className={styles.card}>
 
-          {/* CSS envelope + check illustration */}
-          <div className={styles.illustration} aria-hidden="true">
-            <div className={styles.envelope}>
-              {/* flap triangle via ::before */}
-              <div className={styles.envelopeLetter} />
-              <div className={styles.checkBadge}>✓</div>
-            </div>
-          </div>
-
-          <h1 className={styles.heading}>Confirm Your Email</h1>
-
-          {/* Purple email pill */}
-          <p className={styles.emailPill}>{email}</p>
+          <h1 className={styles.heading}>Confirm your email</h1>
 
           <p className={styles.subText}>
-            Enter the verification code we just emailed to you.
+            Please check your email account{' '}
+            <strong>{email}</strong>, and follow the instructions to confirm your account.
           </p>
 
-          {/* "Not my email" link — clears state and returns to signup */}
-          <Link
-            to="/register"
-            className={styles.notMyEmail}
-            onClick={() => sessionStorage.removeItem('pendingEmail')}
-          >
-            Not my email address
-          </Link>
+          {error && <p className={styles.error} role="alert">{error}</p>}
 
-          {error && (
-            <div className={styles.errorBanner} role="alert">
-              {error}
-            </div>
-          )}
-
-          {/* Verification form */}
+          {/* ── Code entry ────────────────────────────────────── */}
           <form onSubmit={handleSubmit} className={styles.form} noValidate>
-            <div className={styles.fieldGroup}>
+            <div className={styles.field}>
               <label htmlFor="verify-code" className={styles.label}>
-                Verification Code
+                Enter the 6-digit code from your email
               </label>
               <input
                 id="verify-code"
@@ -127,31 +96,39 @@ export default function ConfirmEmail() {
                 required
                 maxLength={6}
                 placeholder="• • • • • •"
-                aria-describedby="code-hint"
               />
-              <span id="code-hint" className={styles.codeHint}>
-                Enter the 6-digit code from your email
-              </span>
             </div>
 
-            <button
-              type="submit"
-              className={styles.confirmBtn}
-              disabled={loading || code.length < 6}
-              aria-busy={loading}
-            >
-              {loading ? 'Verifying…' : 'Confirm My Email'}
-            </button>
+            <div className={styles.btnRow}>
+              <Link
+                to={pendingRole === 'employer' ? '/employer/register?tab=login' : '/login'}
+                className={styles.btnOutline}
+                onClick={() => {
+                  sessionStorage.removeItem('pendingEmail');
+                  sessionStorage.removeItem('pendingRole');
+                }}
+              >
+                BACK TO LOGIN
+              </Link>
+
+              <button
+                type="submit"
+                className={styles.btnFilled}
+                disabled={loading || code.length < 6}
+              >
+                {loading ? 'Verifying…' : 'CONFIRM EMAIL'}
+              </button>
+            </div>
           </form>
 
-          {/* Resend link */}
+          {/* Resend */}
           <button
             type="button"
             className={styles.resendBtn}
             onClick={handleResend}
             disabled={resendLoading}
           >
-            {resendLoading ? 'Sending…' : "Didn't receive a code?"}
+            {resendLoading ? 'Sending…' : 'RESEND EMAIL'}
           </button>
 
           {resendMsg && (
@@ -159,6 +136,7 @@ export default function ConfirmEmail() {
               {resendMsg}
             </p>
           )}
+
         </div>
       </main>
     </div>

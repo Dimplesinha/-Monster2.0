@@ -20,6 +20,44 @@
   gap: 1rem;
 }
 
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.saveBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.saveBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.saveBtn:hover {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+.saveBtnActive {
+  color: #e11d48;
+}
+
+.saveBtnActive:hover {
+  background: #fff1f2;
+}
+
 .logo {
   width: 44px;
   height: 44px;

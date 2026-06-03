@@ -15,11 +15,26 @@ function signToken(user) {
 
 function safeUser(user) {
   return {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    emailVerified: user.emailVerified,
+    _id:              user._id,
+    name:             user.name,
+    email:            user.email,
+    role:             user.role,
+    emailVerified:    user.emailVerified,
+    resume:           user.resume           || null,
+    onboarding:       user.onboarding       || {},
+    contactInfo:      user.contactInfo      || null,
+    resumeVisibility: user.resumeVisibility || null,
+    jobPreferences:   user.jobPreferences   || null,
+    // employer profile
+    companyProfile:              user.companyProfile             || null,
+    employerOnboardingComplete:  user.employerOnboardingComplete || false,
+    // parsed resume data
+    resumeParsed:     user.resumeParsed     || false,
+    summary:          user.summary          || '',
+    skills:           user.skills           || [],
+    workExperience:   user.workExperience   || [],
+    education:        user.education        || [],
+    profileLinks:     user.profileLinks     || [],
   };
 }
 

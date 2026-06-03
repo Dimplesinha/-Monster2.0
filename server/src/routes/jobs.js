@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {
-  listJobs, getJob, createJob, myJobs, deleteJob, applyToJob,
+  listJobs, getJob, createJob, myJobs, deleteJob,
+  applyToJob, checkApplied, myAppliedJobIds,
 } = require('../controllers/jobController');
 const { requireAuth, requireRole } = require('../middleware/auth');
 
@@ -53,6 +54,17 @@ router.get('/', listJobs);
  *         description: Array of jobs
  */
 router.get('/mine', requireAuth, requireRole('employer', 'admin'), myJobs);
+
+/**
+ * @swagger
+ * /jobs/applied-ids:
+ *   get:
+ *     tags: [Jobs]
+ *     summary: Get all job IDs the current jobseeker has applied to
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get('/applied-ids', requireAuth, requireRole('jobseeker'), myAppliedJobIds);
 
 /**
  * @swagger
@@ -148,5 +160,16 @@ router.delete('/:id', requireAuth, requireRole('employer', 'admin'), deleteJob);
  *         description: Already applied
  */
 router.post('/:id/apply', requireAuth, requireRole('jobseeker'), applyToJob);
+
+/**
+ * @swagger
+ * /jobs/{id}/applied:
+ *   get:
+ *     tags: [Jobs]
+ *     summary: Check if current jobseeker has applied to a job
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get('/:id/applied', requireAuth, requireRole('jobseeker'), checkApplied);
 
 module.exports = router;

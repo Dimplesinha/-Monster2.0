@@ -27,6 +27,41 @@
   align-items: flex-start;
 }
 
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.saveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.saveBtn:hover {
+  border-color: #e11d48;
+  color: #e11d48;
+  background: #fff1f2;
+}
+
+.saveBtnActive {
+  border-color: #e11d48;
+  color: #e11d48;
+  background: #fff1f2;
+}
+
 .logo {
   width: 56px;
   height: 56px;
@@ -87,10 +122,40 @@
 
 .btnPrimary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.applied {
+.appliedWrap {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.appliedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
   font-weight: 700;
-  color: #065f46;
-  font-size: 1rem;
+  color: #059669;
+  font-size: 0.9375rem;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.trackLink {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6d28d9;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.trackLink:hover { opacity: 0.75; text-decoration: underline; }
+
+.applyError {
+  margin-top: 0.625rem;
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin: 0.625rem 0 0;
 }
 
 .state {

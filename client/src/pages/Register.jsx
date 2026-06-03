@@ -55,7 +55,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   // Signup only collects email + password; role defaults to jobseeker on the backend
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError]   = useState('');
   const [loading, setLoading] = useState(false);
@@ -75,9 +75,10 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (!form.name.trim()) { setError('Please enter your full name.'); return; }
     setLoading(true);
     try {
-      await register({ email: form.email, password: form.password });
+      await register({ name: form.name.trim(), email: form.email, password: form.password });
       // Store email so /confirm-email can display it and send it to the verify endpoint
       sessionStorage.setItem('pendingEmail', form.email);
       navigate('/confirm-email');
@@ -182,6 +183,23 @@ export default function Register() {
             )}
 
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
+
+              <div className={styles.fieldGroup}>
+                <label htmlFor="reg-name" className={styles.label}>
+                  Full Name
+                </label>
+                <input
+                  id="reg-name"
+                  className={styles.input}
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  autoComplete="name"
+                  placeholder="e.g. Dimple Sinha"
+                />
+              </div>
 
               <div className={styles.fieldGroup}>
                 <label htmlFor="reg-email" className={styles.label}>
