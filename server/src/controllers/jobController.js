@@ -65,12 +65,42 @@ exports.applyToJob = async (req, res, next) => {
   try {
     const exists = await Application.exists({ job: req.params.id, applicant: req.user.id });
     if (exists) return res.status(409).json({ message: 'Already applied' });
+
+    const {
+      coverNote, firstName, lastName, pronouns,
+      email, phone, phoneCountryCode,
+      country, zipCode, city,
+    } = req.body;
+
     const application = await Application.create({
-      job: req.params.id,
+      job:       req.params.id,
       applicant: req.user.id,
-      coverNote: req.body.coverNote,
+      coverNote,
+      firstName, lastName, pronouns,
+      email, phone, phoneCountryCode,
+      country, zipCode, city,
     });
     res.status(201).json({ application });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ── GET /api/jobs/:id/applied  (jobseeker only) ─────────────────── */
+exports.checkApplied = async (req, res, next) => {
+  try {
+    const exists = await Application.exists({ job: req.params.id, applicant: req.user.id });
+    res.json({ applied: !!exists });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ── GET /api/jobs/applied-ids  (jobseeker: all applied job IDs) ─── */
+exports.myAppliedJobIds = async (req, res, next) => {
+  try {
+    const apps = await Application.find({ applicant: req.user.id }).select('job');
+    res.json({ jobIds: apps.map((a) => String(a.job)) });
   } catch (err) {
     next(err);
   }

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 
 const AuthContext = createContext(null);
@@ -22,8 +22,6 @@ export function AuthProvider({ children }) {
   }, []);
 
   /* ── register ────────────────────────────────────────────────── */
-  // Returns { message, email } — does NOT log the user in.
-  // The user must verify their email via verifyEmail() first.
   const register = async (payload) => {
     const { data } = await api.post('/auth/register', payload);
     return data; // { message, email }
@@ -39,7 +37,6 @@ export function AuthProvider({ children }) {
   };
 
   /* ── verifyEmail ─────────────────────────────────────────────── */
-  // Validates the 6-digit code and issues a JWT — logs the user in.
   const verifyEmail = async (email, code) => {
     const { data } = await api.post('/auth/verify-email', { email, code });
     localStorage.setItem('token', data.token);
@@ -54,6 +51,20 @@ export function AuthProvider({ children }) {
     return data; // { message }
   };
 
+  /* ── refreshUser ─────────────────────────────────────────────── */
+  // Re-fetch the current user from /auth/me and update context.
+  // Call after any mutation that changes user profile / onboarding state.
+  const refreshUser = useCallback(async () => {
+    try {
+      const { data } = await api.get('/auth/me');
+      setUser(data.user);
+      return data.user;
+    } catch {
+      // token expired or revoked — silently ignore
+      return null;
+    }
+  }, []);
+
   /* ── logout ──────────────────────────────────────────────────── */
   const logout = () => {
     localStorage.removeItem('token');
@@ -63,7 +74,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, register, verifyEmail, resendVerification, logout }}
+      value={{ user, loading, login, register, verifyEmail, resendVerification, refreshUser, logout }}
     >
       {children}
     </AuthContext.Provider>

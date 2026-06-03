@@ -1,245 +1,370 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-// Reuse the same panel/form styles as the job-seeker register page
-import styles from './Register.module.css';
+import styles from './EmployerRegister.module.css';
 
-/* ── Icons ───────────────────────────────────────────────────────── */
+/* ── Icons ──────────────────────────────────────────────────────── */
+function EyeOffIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+      <line x1="1" y1="1" x2="23" y2="23"/>
+    </svg>
+  );
+}
+
 function EyeIcon() {
   return (
-    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
       <circle cx="12" cy="12" r="3"/>
     </svg>
   );
 }
 
-function EyeOffIcon() {
+/* ── Custom checkbox ────────────────────────────────────────────── */
+function CustomCheck({ checked, onToggle, teal, label }) {
   return (
-    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
-      <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
-      <line x1="1" y1="1" x2="23" y2="23"/>
-    </svg>
+    <span
+      role="checkbox"
+      aria-checked={checked}
+      aria-label={label}
+      tabIndex={0}
+      className={`${styles.checkBox} ${
+        checked ? (teal ? styles.checkBoxTeal : styles.checkBoxPurple) : ''
+      }`}
+      onClick={onToggle}
+      onKeyDown={(e) => e.key === ' ' && onToggle()}
+    >
+      {checked && (
+        <svg viewBox="0 0 12 10" fill="none" stroke="#fff" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="1 5 4.5 9 11 1"/>
+        </svg>
+      )}
+    </span>
   );
 }
 
-function GoogleIcon() {
-  return (
-    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 48 48">
-      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-      <path fill="#FBBC05" d="M10.53 28.59a14.88 14.88 0 01-.82-4.59c0-1.57.27-3.1.82-4.59V13.22H2.56A23.93 23.93 0 000 24c0 3.77.9 7.34 2.56 10.46l7.97-5.87z"/>
-      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-    </svg>
-  );
-}
-
-/* ── Employer-specific benefit copy ─────────────────────────────── */
-const EMPLOYER_BENEFITS = [
-  'Post jobs and reach thousands of qualified candidates',
-  'Search and filter resumes to find the right match',
-  'Manage all your job postings from one dashboard',
-  'Access flexible hiring plans for any team size',
-];
-
-/* ── Component ───────────────────────────────────────────────────── */
-export default function EmployerRegister() {
+/* ── Sign-up form ───────────────────────────────────────────────── */
+function SignUpForm({ onRegistered }) {
   const { register } = useAuth();
-  const navigate = useNavigate();
 
-  // 2-field signup — role is sent as 'employer', not selectable by user
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError]   = useState('');
-  const [loading, setLoading] = useState(false);
-  const [toast, setToast]   = useState('');
-  const toastTimer = useRef(null);
+  const [form, setForm]             = useState({ name: '', email: '', password: '' });
+  const [showPw, setShowPw]         = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [agreeMarketing, setAgreeMarketing] = useState(true);
+  const [error, setError]           = useState('');
+  const [loading, setLoading]       = useState(false);
 
-  useEffect(() => () => clearTimeout(toastTimer.current), []);
-
-  const showToast = (msg) => {
-    setToast(msg);
-    clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(''), 3000);
-  };
-
-  const handleChange = (e) =>
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const set = (field) => (e) => setForm((p) => ({ ...p, [field]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.name.trim())     { setError('Please enter your full name.'); return; }
+    if (!agreeTerms)           { setError('You must agree to the Terms of Use to continue.'); return; }
+    if (form.password.length < 8) { setError('Password must be at least 8 characters.'); return; }
     setError('');
     setLoading(true);
     try {
-      await register({ email: form.email, password: form.password, role: 'employer' });
+      await register({ name: form.name.trim(), email: form.email, password: form.password, role: 'employer', agreeMarketing });
       sessionStorage.setItem('pendingEmail', form.email);
-      navigate('/confirm-email');
+      sessionStorage.setItem('pendingRole', 'employer');
+      onRegistered();
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Registration failed. Please try again.'
-      );
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={styles.pageWrapper}>
+    <>
+      <h1 className={styles.heading}>Create an employer account</h1>
+      {error && <p className={styles.error} role="alert">{error}</p>}
 
-      {/* ── Dark purple brand header ──────────────────────────────── */}
-      <header className={styles.topBar}>
-        <Link to="/" className={styles.logo} aria-label="Monster home">
-          Monster
-        </Link>
-        <nav className={styles.topBarNav} aria-label="Account navigation">
-          <span className={styles.topBarText}>Already recruiting?</span>
-          <Link to="/login" className={styles.topBarLogin}>
-            Log In
-          </Link>
-        </nav>
-      </header>
+      <form className={styles.formGrid} onSubmit={handleSubmit} noValidate>
 
-      {/* ── Toast ─────────────────────────────────────────────────── */}
-      <div
-        role="status"
-        aria-live="polite"
-        className={`${styles.toast} ${toast ? styles.toastVisible : ''}`}
-      >
-        {toast}
-      </div>
-
-      {/* ── Two-column panel ─────────────────────────────────────── */}
-      <main className={styles.main}>
-        <div className={styles.panel}>
-
-          {/* LEFT column — branding + benefits */}
-          <section className={styles.leftCol} aria-labelledby="employer-reg-heading">
-
-            <div className={styles.loginPrompt}>
-              <span className={styles.loginPromptText}>Have an account?</span>
-              <Link to="/login" className={styles.loginPromptBtn}>
-                Log In
-              </Link>
-            </div>
-
-            <div>
-              <h1 id="employer-reg-heading" className={styles.createHeading}>
-                Create Your Employer Account
-              </h1>
-              <p style={{ color: '#6b7280', fontSize: '1rem', marginTop: '0.5rem', marginBottom: 0 }}>
-                Start hiring candidates today.
-              </p>
-            </div>
-
-            <ul className={styles.benefitsList} aria-label="Employer account benefits">
-              {EMPLOYER_BENEFITS.map((b) => (
-                <li key={b} className={styles.benefitItem}>{b}</li>
-              ))}
-            </ul>
-
-            {/* Social sign-up placeholder */}
-            <div className={styles.socialGroup} role="group" aria-label="Social sign-up options">
-              <button
-                type="button"
-                className={styles.socialBtn}
-                onClick={() => showToast('Google sign-up coming soon.')}
-              >
-                <GoogleIcon />
-                <span>Continue with Google</span>
-              </button>
-            </div>
-
-            <p className={styles.legal}>
-              By registering you agree to Monster's{' '}
-              <a href="#" className={styles.legalLink}>Terms of Use</a> and{' '}
-              <a href="#" className={styles.legalLink}>Privacy Policy</a>.
-              Monster may send you recruiting-related communications.
-              You may unsubscribe at any time.
-            </p>
-          </section>
-
-          {/* Vertical divider */}
-          <div className={styles.divider} aria-hidden="true">
-            <span className={styles.dividerLabel}>or</span>
+        {/* Left: inputs */}
+        <div className={styles.fieldsCol}>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="er-name">Full Name</label>
+            <input
+              id="er-name"
+              className={styles.input}
+              type="text"
+              value={form.name}
+              onChange={set('name')}
+              placeholder="e.g. Dimple Sinha"
+              required
+              autoComplete="name"
+            />
           </div>
 
-          {/* RIGHT column — email sign-up form */}
-          <section className={styles.rightCol} aria-label="Employer email registration form">
-            <h2 className={styles.signupHeading}>Sign Up With Work Email</h2>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="er-email">Email Address</label>
+            <input
+              id="er-email"
+              className={styles.input}
+              type="email"
+              value={form.email}
+              onChange={set('email')}
+              placeholder="you@example.com"
+              required
+              autoComplete="email"
+            />
+          </div>
 
-            {error && (
-              <div className={styles.errorBanner} role="alert">
-                {error}
-              </div>
-            )}
-
-            <form className={styles.form} onSubmit={handleSubmit} noValidate>
-
-              <div className={styles.fieldGroup}>
-                <label htmlFor="er-email" className={styles.label}>
-                  Work Email
-                </label>
-                <input
-                  id="er-email"
-                  className={styles.input}
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                />
-              </div>
-
-              <div className={styles.fieldGroup}>
-                <label htmlFor="er-password" className={styles.label}>
-                  Password
-                </label>
-                <div className={styles.passwordWrap}>
-                  <input
-                    id="er-password"
-                    className={styles.input}
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    required
-                    minLength={8}
-                    autoComplete="new-password"
-                    placeholder="At least 8 characters"
-                  />
-                  <button
-                    type="button"
-                    className={styles.eyeBtn}
-                    onClick={() => setShowPassword((v) => !v)}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    aria-pressed={showPassword}
-                  >
-                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className={styles.createBtn}
-                disabled={loading}
-                aria-busy={loading}
-              >
-                {loading ? 'Creating account…' : 'Create Employer Account'}
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="er-password">Password</label>
+            <div className={styles.pwWrap}>
+              <input
+                id="er-password"
+                className={styles.input}
+                type={showPw ? 'text' : 'password'}
+                value={form.password}
+                onChange={set('password')}
+                placeholder="Choose a password"
+                required
+                minLength={8}
+                autoComplete="new-password"
+              />
+              <button type="button" className={styles.eyeBtn}
+                onClick={() => setShowPw((v) => !v)}
+                aria-label={showPw ? 'Hide password' : 'Show password'}>
+                {showPw ? <EyeIcon /> : <EyeOffIcon />}
               </button>
+            </div>
+          </div>
+        </div>
 
-            </form>
+        {/* Right: password requirements */}
+        <aside className={styles.requirementsCol} aria-label="Password requirements">
+          <p className={styles.reqTitle}>Password requirements:</p>
+          <ul className={styles.reqList}>
+            <li>Password should be at least 8 characters</li>
+          </ul>
+          <p className={styles.reqTitle} style={{ marginTop: '0.75rem' }}>
+            Must contain at least 3 of the following 4 types of characters:
+          </p>
+          <ul className={styles.reqList}>
+            <li>Lower case letters (a - z)</li>
+            <li>Upper case letters (A - Z)</li>
+            <li>Numbers (i.e. 0 - 9)</li>
+            <li>Special characters, i.e. !@#$%^&amp;*()</li>
+          </ul>
+        </aside>
 
-            <p className={styles.mobileLogin}>
-              Already have an account?{' '}
-              <Link to="/login" className={styles.mobileLoginLink}>
-                Log In
-              </Link>
-            </p>
-          </section>
+        {/* Checkboxes */}
+        <div className={styles.checkboxGroup}>
+          <label className={styles.checkLabel}>
+            <CustomCheck
+              checked={agreeTerms}
+              onToggle={() => setAgreeTerms((v) => !v)}
+              teal={false}
+              label="Agree to Terms of Use"
+            />
+            <span>
+              You agree to Monster&apos;s{' '}
+              <a href="#" className={styles.checkLink}>Terms of Use</a>{' '}
+              and use of{' '}
+              <a href="#" className={styles.checkLink}>Privacy Policy</a>.
+            </span>
+          </label>
+
+          <label className={styles.checkLabel}>
+            <CustomCheck
+              checked={agreeMarketing}
+              onToggle={() => setAgreeMarketing((v) => !v)}
+              teal={true}
+              label="Opt in to marketing emails"
+            />
+            <span>
+              Please send me relevant news, personalized offers, and tips on how to get the most out of my job postings.
+            </span>
+          </label>
+        </div>
+
+        <div className={styles.submitRow}>
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? 'Creating account…' : 'SUBMIT'}
+          </button>
+        </div>
+      </form>
+    </>
+  );
+}
+
+/* ── Log-in form (stays on the employer Monster+ page) ─────────── */
+function LoginForm() {
+  const { login } = useAuth();
+  const navigate  = useNavigate();
+
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [showPw, setShowPw] = useState(false);
+  const [error, setError]   = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const set = (field) => (e) => setForm((p) => ({ ...p, [field]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const user = await login(form.email, form.password);
+
+      if (!user) { setError('Login failed. Please try again.'); return; }
+
+      // Not an employer account
+      if (user.role !== 'employer' && user.role !== 'admin') {
+        setError('This portal is for employer accounts. Please use the candidate login instead.');
+        return;
+      }
+
+      // Email not verified
+      if (!user.emailVerified) {
+        sessionStorage.setItem('pendingEmail', form.email);
+        sessionStorage.setItem('pendingRole', 'employer');
+        navigate('/confirm-email');
+        return;
+      }
+
+      // Employer onboarding incomplete → Getting Started
+      if (!user.employerOnboardingComplete) {
+        navigate('/employer/onboarding');
+        return;
+      }
+
+      // All good → dashboard
+      navigate('/dashboard');
+    } catch (err) {
+      const msg = err.response?.data?.message;
+      if (msg === 'Please verify your email before logging in.') {
+        sessionStorage.setItem('pendingEmail', form.email);
+        sessionStorage.setItem('pendingRole', 'employer');
+        navigate('/confirm-email');
+      } else {
+        setError(msg || 'Invalid email or password.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <h1 className={styles.heading}>Sign in to Monster+</h1>
+      <p className={styles.loginSub}>
+        Access your employer dashboard, manage job postings, and find top candidates.
+      </p>
+
+      {error && <p className={styles.error} role="alert">{error}</p>}
+
+      <form className={styles.loginForm} onSubmit={handleSubmit} noValidate>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="li-email">Email Address</label>
+          <input
+            id="li-email"
+            className={styles.input}
+            type="email"
+            value={form.email}
+            onChange={set('email')}
+            placeholder="you@example.com"
+            required
+            autoComplete="email"
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="li-password">Password</label>
+          <div className={styles.pwWrap}>
+            <input
+              id="li-password"
+              className={styles.input}
+              type={showPw ? 'text' : 'password'}
+              value={form.password}
+              onChange={set('password')}
+              placeholder="Your password"
+              required
+              autoComplete="current-password"
+            />
+            <button type="button" className={styles.eyeBtn}
+              onClick={() => setShowPw((v) => !v)}
+              aria-label={showPw ? 'Hide password' : 'Show password'}>
+              {showPw ? <EyeIcon /> : <EyeOffIcon />}
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.loginFooter}>
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? 'Signing in…' : 'SIGN IN'}
+          </button>
+          <Link to="#" className={styles.forgotLink}>Forgot password?</Link>
+        </div>
+
+        <p className={styles.loginDisclaimer}>
+          This portal is exclusively for employer accounts.
+        </p>
+      </form>
+    </>
+  );
+}
+
+/* ── Page component ─────────────────────────────────────────────── */
+export default function EmployerRegister() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Allow ?tab=login to deep-link to the login tab (e.g. from employer pricing "Sign In")
+  const [tab, setTab] = useState(searchParams.get('tab') === 'login' ? 'login' : 'signup');
+
+  const switchTab = (t) => { setTab(t); };
+
+  return (
+    <div className={styles.page}>
+
+      {/* ── Top bar ─────────────────────────────────────────── */}
+      <header className={styles.topBar}>
+        <Link to="/employer/pricing" className={styles.logo} aria-label="Monster+ employer home">
+          Monster<span className={styles.logoPlus}>+</span>
+        </Link>
+      </header>
+
+      {/* ── Main ────────────────────────────────────────────── */}
+      <main className={styles.main}>
+        <div className={styles.card}>
+
+          {/* Tabs */}
+          <div className={styles.tabs} role="tablist">
+            <button
+              role="tab"
+              aria-selected={tab === 'signup'}
+              className={`${styles.tab} ${tab === 'signup' ? styles.tabActive : ''}`}
+              onClick={() => switchTab('signup')}
+            >
+              Sign up
+            </button>
+            <button
+              role="tab"
+              aria-selected={tab === 'login'}
+              className={`${styles.tab} ${tab === 'login' ? styles.tabActive : ''}`}
+              onClick={() => switchTab('login')}
+            >
+              Log in
+            </button>
+          </div>
+
+          {/* Tab content */}
+          <div className={styles.cardBody}>
+            {tab === 'signup'
+              ? <SignUpForm onRegistered={() => navigate('/confirm-email')} />
+              : <LoginForm />
+            }
+          </div>
 
         </div>
       </main>

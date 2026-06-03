@@ -11,6 +11,8 @@ const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
 const articleRoutes = require('./routes/articles');
+const userRoutes = require('./routes/users');
+const blogRoutes = require('./routes/blogs');
 
 const app = express();
 
@@ -37,6 +39,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/blogs', blogRoutes);
 
 /* Health */
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));

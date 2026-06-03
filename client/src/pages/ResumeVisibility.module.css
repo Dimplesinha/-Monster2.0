@@ -1,0 +1,307 @@
+/* ── Page shell ─────────────────────────────────────────────────── */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+.topBar {
+  background: #1e1133;
+  height: 72px;
+  padding: 0 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #d8b4fe;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.logo:hover { color: #fff; }
+
+.topBarTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  letter-spacing: 0.03em;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ── Illustration ────────────────────────────────────────────────── */
+.illustration {
+  width: 140px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+/* ── Step bar (shared across onboarding) ─────────────────────────── */
+.stepBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+}
+
+.stepItem {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.stepDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  flex-shrink: 0;
+  z-index: 1;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.stepDot span { line-height: 1; }
+.stepDot svg { width: 12px; height: 12px; }
+
+.stepActive {
+  background: #6b21a8;
+  border-color: #6b21a8;
+  color: #fff;
+}
+
+.stepDone {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+.stepLabel {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6875rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.stepLabelActive {
+  color: #6b21a8;
+  font-weight: 700;
+}
+
+.stepLine {
+  flex: 1;
+  height: 2px;
+  background: #e5e7eb;
+  margin: 0 4px;
+  align-self: center;
+  transition: background 0.2s;
+}
+
+.stepLineDone { background: #16a34a; }
+
+/* ── Card header ─────────────────────────────────────────────────── */
+.cardHeader {
+  width: 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.subtext {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Error banner ────────────────────────────────────────────────── */
+.errorBanner {
+  width: 100%;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ── Form ────────────────────────────────────────────────────────── */
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Visibility option cards ─────────────────────────────────────── */
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.optionCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+  user-select: none;
+}
+
+.optionCard:hover {
+  border-color: #c4b5fd;
+  background: #faf5ff;
+}
+
+.optionCardSelected {
+  border-color: #0d9488;
+  background: #f0fdfb;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.optionIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #f3e8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #7c3aed;
+  transition: background 0.15s, color 0.15s;
+}
+
+.optionIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.optionIconSelected {
+  background: #0d9488;
+  color: #fff;
+}
+
+.optionBody {
+  flex: 1;
+}
+
+.optionTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.25rem;
+}
+
+.optionDesc {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.radioMark {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: border-color 0.15s;
+}
+
+.radioMarkSelected {
+  border-color: #0d9488;
+  background: #0d9488;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+/* ── Submit button ───────────────────────────────────────────────── */
+.submitBtn {
+  width: 100%;
+  padding: 0.9rem;
+  background: #6b21a8;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  font-family: inherit;
+  margin-top: 0.25rem;
+}
+
+.submitBtn:hover:not(:disabled) { background: #7c3aed; }
+.submitBtn:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+.submitBtn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .card {
+    padding: 2rem 1.25rem 1.75rem;
+    border-radius: 14px;
+  }
+  .topBar { padding: 0 1.25rem; }
+  .heading { font-size: 1.25rem; }
+}

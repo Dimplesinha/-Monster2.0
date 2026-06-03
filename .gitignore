@@ -17,6 +17,10 @@ logs/
 *.log
 npm-debug.log*
 
+# Uploaded resume files — keep directory, ignore actual uploads
+server/uploads/resumes/*
+!server/uploads/resumes/.gitkeep
+
 # Local browser/MCP captures
 .playwright-mcp/
 

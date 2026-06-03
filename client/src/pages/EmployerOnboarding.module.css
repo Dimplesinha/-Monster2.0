@@ -1,0 +1,270 @@
+/* ══════════════════════════════════════════════════════════
+   EmployerOnboarding — Getting Started page
+   ══════════════════════════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.topBar {
+  background: #1e1240;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  flex-shrink: 0;
+}
+
+.topBarUser {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  transition: opacity 0.15s;
+}
+.topBarUser:hover { opacity: 0.8; }
+
+.topBarAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: block;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.logoPlus { color: #0d9488; }
+
+/* ── Main layout ─────────────────────────────────────────── */
+.main {
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Title row ───────────────────────────────────────────── */
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1e1240;
+  margin: 0;
+}
+
+.requiredNote {
+  font-size: 0.875rem;
+  color: #dc2626;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Plan bar ────────────────────────────────────────────── */
+.planBar {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.planSelect {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.planDropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.5rem 2.25rem 0.5rem 0.875rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+.planDropdown:focus { border-color: #6d28d9; }
+
+.chevron {
+  position: absolute;
+  right: 0.625rem;
+  pointer-events: none;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+}
+.chevron svg { width: 14px; height: 14px; }
+
+.planStat {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.9rem;
+}
+
+.planStatLabel { font-weight: 600; color: #374151; }
+.planStatValue { font-weight: 700; color: #111827; }
+
+/* ── Form card ───────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.75rem 2rem 2.25rem;
+}
+
+.cardIntro {
+  font-size: 0.9375rem;
+  color: #374151;
+  margin: 0 0 2rem;
+}
+
+/* ── Error ───────────────────────────────────────────────── */
+.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+  padding: 0.625rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+/* ── Sections ────────────────────────────────────────────── */
+.section {
+  padding: 1.5rem 0;
+  border-top: 1px solid #f3f4f6;
+}
+.section:first-of-type { border-top: none; padding-top: 0; }
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #6d28d9;
+  margin: 0 0 1rem;
+}
+
+.req { color: #dc2626; }
+
+/* ── Form elements ───────────────────────────────────────── */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 620px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.input {
+  padding: 0.7rem 0.875rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  color: #111827;
+  font-family: inherit;
+  outline: none;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+.input:focus { border-color: #6d28d9; }
+
+/* ── Select ──────────────────────────────────────────────── */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0.7rem 2.5rem 0.7rem 0.875rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  color: #111827;
+  font-family: inherit;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.select:focus { border-color: #6d28d9; }
+
+.selectChevron {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.875rem;
+  pointer-events: none;
+  color: #6b7280;
+  display: flex;
+}
+.selectChevron svg { width: 14px; height: 14px; }
+
+/* ── Submit row ──────────────────────────────────────────── */
+.submitRow {
+  padding-top: 2rem;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 1.5rem;
+}
+
+.submitBtn {
+  padding: 0.875rem 2.25rem;
+  background: #6d28d9;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.submitBtn:hover:not(:disabled) { background: #5b21b6; }
+.submitBtn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .row2 { grid-template-columns: 1fr; }
+  .card { padding: 1.25rem; }
+  .planBar { gap: 1rem; }
+  .pageTitle { font-size: 1.5rem; }
+}

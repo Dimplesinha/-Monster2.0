@@ -1,0 +1,386 @@
+/* ── Page shell ─────────────────────────────────────────────────── */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+/* ── Top bar ─────────────────────────────────────────────────────── */
+.topBar {
+  background: #1e1133;
+  height: 72px;
+  padding: 0 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #d8b4fe;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.logo:hover { color: #fff; }
+
+.topBarTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  letter-spacing: 0.03em;
+}
+
+/* ── Main ────────────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Card ────────────────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ── Illustration ────────────────────────────────────────────────── */
+.illustration {
+  width: 120px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+/* ── Step bar ────────────────────────────────────────────────────── */
+.stepBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+}
+
+.stepItem {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.stepDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  flex-shrink: 0;
+  z-index: 1;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.stepDot span {
+  line-height: 1;
+}
+
+.stepDot svg {
+  width: 12px;
+  height: 12px;
+}
+
+.stepActive {
+  background: #6b21a8;
+  border-color: #6b21a8;
+  color: #fff;
+}
+
+.stepDone {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+.stepLabel {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6875rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.stepLabelActive {
+  color: #6b21a8;
+  font-weight: 700;
+}
+
+.stepLine {
+  flex: 1;
+  height: 2px;
+  background: #e5e7eb;
+  margin: 0 4px;
+  margin-bottom: 0;
+  align-self: center;
+  transition: background 0.2s;
+}
+
+.stepLineDone {
+  background: #16a34a;
+}
+
+/* ── Card header ─────────────────────────────────────────────────── */
+.cardHeader {
+  width: 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem;
+}
+
+.subtext {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Error banner ────────────────────────────────────────────────── */
+.errorBanner {
+  width: 100%;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ── Form ────────────────────────────────────────────────────────── */
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.req { color: #6b21a8; }
+
+.input {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: #1a1a2e;
+  background: #fff;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6b21a8;
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.12);
+}
+
+.input::placeholder { color: #9ca3af; }
+
+/* ── Two-column row ──────────────────────────────────────────────── */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Phone ───────────────────────────────────────────────────────── */
+.phoneRow {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.countryCode {
+  padding: 0.65rem 0.5rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #374151;
+  background: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+  width: 110px;
+}
+
+.countryCode:focus {
+  outline: none;
+  border-color: #6b21a8;
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.12);
+}
+
+.phoneInput {
+  flex: 1;
+  padding: 0.65rem 0.875rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: #1a1a2e;
+  background: #fff;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.phoneInput:focus {
+  outline: none;
+  border-color: #6b21a8;
+  box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.12);
+}
+
+.phoneInput::placeholder { color: #9ca3af; }
+
+/* ── Work authorization ──────────────────────────────────────────── */
+.authQuestion {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 0.25rem;
+}
+
+.authCountryHint {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0 0 0.625rem;
+  font-style: italic;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 0.875rem;
+}
+
+.radioCard {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+  user-select: none;
+}
+
+.radioCard:hover {
+  border-color: #c4b5fd;
+  background: #faf5ff;
+}
+
+.radioCardSelected {
+  border-color: #6b21a8;
+  background: #faf5ff;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radioMark {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+}
+
+.radioCardSelected .radioMark {
+  border-color: #6b21a8;
+  background: #6b21a8;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.radioCardLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* ── Submit button ───────────────────────────────────────────────── */
+.submitBtn {
+  width: 100%;
+  padding: 0.9rem;
+  background: #6b21a8;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  font-family: inherit;
+  margin-top: 0.5rem;
+}
+
+.submitBtn:hover:not(:disabled) { background: #7c3aed; }
+.submitBtn:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+.submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .card {
+    padding: 2rem 1.25rem 1.75rem;
+    border-radius: 14px;
+  }
+  .topBar { padding: 0 1.25rem; }
+  .row2 { grid-template-columns: 1fr; }
+  .heading { font-size: 1.25rem; }
+  .radioGroup { flex-direction: column; }
+}
