@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSavedJobs } from '../context/SavedJobsContext';
-import { nextOnboardingStep } from '../hooks/useOnboarding';
 import styles from './Navbar.module.css';
 
 /* ── Icons ──────────────────────────────────────────────────────── */

@@ -120,8 +120,6 @@ export default function Dashboard() {
   const activeJobs = jobs.length;
 
   // Employer initials for avatar fallback
-  const name = user?.companyProfile?.firstName || user?.name || 'E';
-  const initials = name.charAt(0).toUpperCase();
   const companyName = user?.companyProfile?.companyName || user?.name || 'Your Company';
 
   return (

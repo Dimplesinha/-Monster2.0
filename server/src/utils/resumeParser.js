@@ -77,7 +77,7 @@ function splitIntoSections(lines) {
       }
     }
     // Normalise bullets to plain text
-    buf.push(line.replace(/^[•●◦▪\-\*]+\s*/, ''));
+    buf.push(line.replace(/^[•●◦▪*-]+\s*/, ''));
   }
   flush();
   return sections;
@@ -86,7 +86,7 @@ function splitIntoSections(lines) {
 /* ── 3. Field extractors ─────────────────────────────────────────── */
 
 function extractEmail(text) {
-  const m = text.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+  const m = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   return m ? m[0].toLowerCase() : null;
 }
 
@@ -98,19 +98,19 @@ function extractPhone(text) {
   // Detect country code prefix
   const ccMatch = raw.match(/^(\+\d{1,3})/);
   const cc      = ccMatch ? ccMatch[1] : '+1';
-  const digits  = raw.replace(/^\+\d{1,3}[\s\-]?/, '').replace(/\D/g, '');
+  const digits  = raw.replace(/^\+\d{1,3}[\s-]?/, '').replace(/\D/g, '');
   return { raw: digits, countryCode: cc };
 }
 
 function extractLinkedIn(text) {
-  const m = text.match(/(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/([\w\-]+)/i);
+  const m = text.match(/(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/([\w-]+)/i);
   return m ? `https://www.linkedin.com/in/${m[1]}` : null;
 }
 
 function extractOtherLinks(text) {
   const links = [];
   // GitHub
-  const gh = text.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/([\w\-]+)/i);
+  const gh = text.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/([\w-]+)/i);
   if (gh) links.push({ url: `https://github.com/${gh[1]}`, label: 'GitHub' });
   // Portfolio / other https URLs (avoid linkedin/github already found)
   const urls = [...text.matchAll(/https?:\/\/(?!(?:www\.)?linkedin\.com|(?:www\.)?github\.com)[\w.\-/?=#&%+@]+/gi)];
@@ -132,7 +132,7 @@ function extractName(headerLines) {
       words.length >= 2 &&
       words.length <= 4 &&
       /^[A-Za-z]/.test(line) &&
-      !/[@\d:\/]/.test(line) &&
+      !/[@\d:/]/.test(line) &&
       !Object.values(SECTION_KEYS).some((re) => re.test(line))
     ) {
       return line.trim();
@@ -146,7 +146,7 @@ function extractSkills(lines) {
   // Split on commas, pipes, bullets, newlines
   const items = raw
     .split(/[,|•·\n\r\t]+/)
-    .map((s) => s.trim().replace(/^[\-*\s]+/, '').replace(/[\-*\s]+$/, ''))
+    .map((s) => s.trim().replace(/^[-*\s]+/, '').replace(/[-*\s]+$/, ''))
     .filter((s) => s.length > 1 && s.length < 80)
     .filter((s) => !/^\d+%?$/.test(s));
 
@@ -182,7 +182,7 @@ function extractWorkExperience(lines) {
     if (dateMatch) {
       // Might be a new entry boundary
       pushEntry();
-      const [fullRange, start, end] = dateMatch;
+      const [, start, end] = dateMatch;
       entry = {
         title:     '',
         company:   '',

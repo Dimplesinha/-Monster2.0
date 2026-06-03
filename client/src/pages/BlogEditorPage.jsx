@@ -59,7 +59,6 @@ function applyMdAction(textarea, action, content, setContent) {
     newCursorEnd   = start + open.length + (selected || 'text').length;
   } else if (action.prefix) {
     // Apply to each selected line
-    const linesBefore = content.slice(0, start).split('\n');
     const lineStart   = content.lastIndexOf('\n', start - 1) + 1;
     const lineEnd     = content.indexOf('\n', end);
     const chunk       = content.slice(lineStart, lineEnd === -1 ? undefined : lineEnd);

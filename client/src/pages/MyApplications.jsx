@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
-import { useAuth } from '../context/AuthContext';
 import styles from './MyApplications.module.css';
 
 /* ── Icons ────────────────────────────────────────────────────────── */
@@ -202,7 +201,6 @@ const FILTERS = [
 
 /* ── Page ─────────────────────────────────────────────────────────── */
 export default function MyApplications() {
-  const { user } = useAuth();
   const [apps,    setApps]    = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter,  setFilter]  = useState('all');
