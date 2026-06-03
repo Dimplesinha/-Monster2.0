@@ -53,7 +53,7 @@ function CustomCheck({ checked, onToggle, teal, label }) {
 function SignUpForm({ onRegistered }) {
   const { register } = useAuth();
 
-  const [form, setForm]             = useState({ email: '', password: '' });
+  const [form, setForm]             = useState({ name: '', email: '', password: '' });
   const [showPw, setShowPw]         = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [agreeMarketing, setAgreeMarketing] = useState(true);
@@ -64,12 +64,13 @@ function SignUpForm({ onRegistered }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.name.trim())     { setError('Please enter your full name.'); return; }
     if (!agreeTerms)           { setError('You must agree to the Terms of Use to continue.'); return; }
     if (form.password.length < 8) { setError('Password must be at least 8 characters.'); return; }
     setError('');
     setLoading(true);
     try {
-      await register({ email: form.email, password: form.password, role: 'employer', agreeMarketing });
+      await register({ name: form.name.trim(), email: form.email, password: form.password, role: 'employer', agreeMarketing });
       sessionStorage.setItem('pendingEmail', form.email);
       sessionStorage.setItem('pendingRole', 'employer');
       onRegistered();
@@ -89,6 +90,20 @@ function SignUpForm({ onRegistered }) {
 
         {/* Left: inputs */}
         <div className={styles.fieldsCol}>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="er-name">Full Name</label>
+            <input
+              id="er-name"
+              className={styles.input}
+              type="text"
+              value={form.name}
+              onChange={set('name')}
+              placeholder="e.g. Dimple Sinha"
+              required
+              autoComplete="name"
+            />
+          </div>
+
           <div className={styles.field}>
             <label className={styles.label} htmlFor="er-email">Email Address</label>
             <input

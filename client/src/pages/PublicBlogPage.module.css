@@ -1,0 +1,293 @@
+/* ══════════════════════════════════════════════════════════
+   PublicBlogPage — individual article read view
+   ══════════════════════════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: #fff;
+}
+
+/* ── Skeleton ────────────────────────────────────────────── */
+.skeletonPage {
+  min-height: 100vh;
+}
+
+.skBone {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #d1d5db 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skHero {
+  height: 340px;
+  border-radius: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #2a1a5e 25%, #1e1240 50%, #2a1a5e 75%);
+  background-size: 200% 100%;
+}
+
+.skBody {
+  max-width: 720px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, #1e1240 0%, #2d1b69 55%, #4c1d95 100%);
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.heroInner {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Back link */
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  width: fit-content;
+  transition: color 0.15s;
+  margin-bottom: 0.25rem;
+}
+.backLink:hover { color: #fff; }
+
+/* Tags */
+.heroTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.heroTag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  background: rgba(167,139,250,0.15);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 999px;
+  padding: 0.2rem 0.625rem;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.heroTag:hover { background: rgba(167,139,250,0.28); }
+
+/* Title */
+.heroTitle {
+  font-size: clamp(1.625rem, 4.5vw, 2.5rem);
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Description */
+.heroDesc {
+  font-size: 1.0625rem;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+  line-height: 1.65;
+  font-style: italic;
+}
+
+/* Author row */
+.authorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.authorAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #c4b5fd);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.authorName {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.authorMeta {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.metaDivider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+
+.metaRight {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.55);
+}
+
+.metaDot { color: rgba(255,255,255,0.3); }
+
+/* Edit link (owner only) */
+.editLink {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #a78bfa;
+  text-decoration: none;
+  width: fit-content;
+  border-bottom: 1px solid rgba(167,139,250,0.4);
+  transition: color 0.15s;
+}
+.editLink:hover { color: #c4b5fd; }
+
+/* ── Body ────────────────────────────────────────────────── */
+.bodyWrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.body {
+  /* MarkdownContent renders its own prose styles */
+}
+
+/* ── CTA aside ───────────────────────────────────────────── */
+.cta {
+  margin-top: 4rem;
+  padding-top: 2.5rem;
+  border-top: 2px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.ctaCard {
+  background: linear-gradient(135deg, #1e1240 0%, #4c1d95 100%);
+  border-radius: 14px;
+  padding: 1.75rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ctaTitle {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.4rem;
+}
+
+.ctaSub {
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+
+.ctaBtn {
+  display: inline-block;
+  padding: 0.625rem 1.5rem;
+  background: #0d9488;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.ctaBtn:hover { background: #0f766e; }
+
+.browseLink {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6d28d9;
+  text-decoration: none;
+}
+.browseLink:hover { text-decoration: underline; }
+
+/* ── 404 state ───────────────────────────────────────────── */
+.notFound {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.nfIcon { font-size: 3.5rem; margin-bottom: 1rem; }
+
+.nfTitle {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #111827;
+  margin: 0 0 0.5rem;
+}
+
+.nfSub {
+  font-size: 1rem;
+  color: #6b7280;
+  max-width: 380px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.nfBtn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: #6d28d9;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.nfBtn:hover { background: #5b21b6; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 2rem 1rem 2.5rem; }
+  .bodyWrap { padding: 2rem 1rem 3rem; }
+  .ctaCard { padding: 1.25rem; }
+  .metaDivider { display: none; }
+}

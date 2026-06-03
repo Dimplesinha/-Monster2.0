@@ -46,11 +46,12 @@ function LogoutBoxIcon() {
   );
 }
 
-function BookmarkIcon() {
+function PenIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
     </svg>
   );
 }
@@ -118,9 +119,9 @@ function ProfileDropdown({ user, onClose, onLogout, navigate }) {
         <span>My Applications</span>
       </button>
 
-      <button className={styles.dropdownItem} onClick={() => go('/jobs?saved=true')} role="menuitem">
-        <BookmarkIcon />
-        <span>Saved Jobs</span>
+      <button className={styles.dropdownItem} onClick={() => go('/my-blogs')} role="menuitem">
+        <PenIcon />
+        <span>My Blogs</span>
       </button>
 
       <button className={styles.dropdownItem} onClick={() => go('/messages')} role="menuitem">
@@ -212,14 +213,14 @@ export default function Navbar() {
             /* ── Jobseeker icon bar ─────────────────────────────── */
             <div className={styles.iconBar}>
 
-              {/* Saved Jobs */}
+              {/* My Blogs */}
               <button
                 className={styles.iconBtn}
-                onClick={() => navigate('/jobs?saved=true')}
-                aria-label="Saved jobs"
-                title="Saved Jobs"
+                onClick={() => navigate('/my-blogs')}
+                aria-label="My blogs"
+                title="My Blogs"
               >
-                <HeartIcon />
+                <PenIcon />
               </button>
 
               {/* Messages */}
@@ -296,6 +297,7 @@ export default function Navbar() {
             <li><Link to="/jobs">Find Jobs</Link></li>
             <li><a href="#salary">Salary Tools</a></li>
             <li><Link to="/career-advice">Career Advice</Link></li>
+            <li><Link to="/blogs">Community Blogs</Link></li>
             <li><a href="#resume-templates">Free Resume Templates</a></li>
             <li><a href="#resume-builder">Free Resume Builder</a></li>
 
@@ -314,8 +316,8 @@ export default function Navbar() {
                   </button>
                 </li>
                 <li className={styles.mobileOnly}>
-                  <button className={styles.mobileProfileBtn} onClick={() => { navigate('/jobs?saved=true'); setMobileOpen(false); }}>
-                    Saved Jobs
+                  <button className={styles.mobileProfileBtn} onClick={() => { navigate('/my-blogs'); setMobileOpen(false); }}>
+                    My Blogs
                   </button>
                 </li>
                 <li className={styles.mobileOnly}>

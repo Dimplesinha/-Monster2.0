@@ -57,6 +57,17 @@ router.get('/mine', requireAuth, requireRole('employer', 'admin'), myJobs);
 
 /**
  * @swagger
+ * /jobs/applied-ids:
+ *   get:
+ *     tags: [Jobs]
+ *     summary: Get all job IDs the current jobseeker has applied to
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get('/applied-ids', requireAuth, requireRole('jobseeker'), myAppliedJobIds);
+
+/**
+ * @swagger
  * /jobs/{id}:
  *   get:
  *     tags: [Jobs]
@@ -160,16 +171,5 @@ router.post('/:id/apply', requireAuth, requireRole('jobseeker'), applyToJob);
  *       - bearerAuth: []
  */
 router.get('/:id/applied', requireAuth, requireRole('jobseeker'), checkApplied);
-
-/**
- * @swagger
- * /jobs/applied-ids:
- *   get:
- *     tags: [Jobs]
- *     summary: Get all job IDs the current jobseeker has applied to
- *     security:
- *       - bearerAuth: []
- */
-router.get('/applied-ids', requireAuth, requireRole('jobseeker'), myAppliedJobIds);
 
 module.exports = router;

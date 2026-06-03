@@ -25,6 +25,10 @@ import EmployerPricing from './pages/EmployerPricing';
 import EmployerJobDetail from './pages/EmployerJobDetail';
 import Messages from './pages/Messages';
 import MyApplications from './pages/MyApplications';
+import BlogsListPage from './pages/BlogsListPage';
+import BlogEditorPage from './pages/BlogEditorPage';
+import BlogsPublicPage from './pages/BlogsPublicPage';
+import PublicBlogPage from './pages/PublicBlogPage';
 import NotFound from './pages/NotFound';
 
 // Exact paths that suppress the jobseeker Navbar & Footer
@@ -38,7 +42,8 @@ const NO_SHELL_EXACT = [
 
 // Prefix-based: any path under these prefixes also hides the jobseeker shell
 const NO_SHELL_PREFIX = [
-  '/employer/',   // /employer/register, /employer/pricing, /employer/onboarding, /employer/jobs/:id
+  '/employer/',   // /employer/register, /employer/pricing, /employer/onboarding, /employer/jobs/:id, /employer/blogs
+  '/my-blogs/',   // /my-blogs/new, /my-blogs/:id/edit  (editor has own header)
 ];
 
 export default function App() {
@@ -55,6 +60,8 @@ export default function App() {
         <Route path="/jobs/:id" element={<JobDetail />} />
         <Route path="/career-advice" element={<CareerAdvice />} />
         <Route path="/career-advice/:slug" element={<ArticleDetail />} />
+        <Route path="/blogs" element={<BlogsPublicPage />} />
+        <Route path="/blogs/:slug" element={<PublicBlogPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/employer/register" element={<EmployerRegister />} />
@@ -156,6 +163,59 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* ── Jobseeker blogs ──────────────────────────────────── */}
+        <Route
+          path="/my-blogs"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <BlogsListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-blogs/new"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <BlogEditorPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-blogs/:id/edit"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <BlogEditorPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ── Employer blogs ───────────────────────────────────── */}
+        <Route
+          path="/employer/blogs"
+          element={
+            <ProtectedRoute roles={['employer', 'admin']}>
+              <BlogsListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employer/blogs/new"
+          element={
+            <ProtectedRoute roles={['employer', 'admin']}>
+              <BlogEditorPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employer/blogs/:id/edit"
+          element={
+            <ProtectedRoute roles={['employer', 'admin']}>
+              <BlogEditorPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/employer/jobs/:id"
           element={

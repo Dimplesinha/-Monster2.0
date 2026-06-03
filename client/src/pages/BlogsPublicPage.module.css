@@ -1,0 +1,273 @@
+/* ══════════════════════════════════════════════════════════
+   BlogsPublicPage — community articles listing
+   ══════════════════════════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+/* ── Hero ───────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #1e1240 0%, #3b1d8e 60%, #6d28d9 100%);
+  padding: 4rem 1.5rem 3.5rem;
+}
+
+.heroInner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroBadge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 1rem;
+  line-height: 1.15;
+}
+
+.heroSub {
+  font-size: 1.0625rem;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 1.5rem;
+  line-height: 1.65;
+}
+
+.heroLink {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #a78bfa;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(167,139,250,0.4);
+  transition: color 0.15s, border-color 0.15s;
+}
+.heroLink:hover { color: #c4b5fd; border-color: rgba(196,181,253,0.6); }
+
+/* ── Tag filter banner ──────────────────────────────────── */
+.tagBanner {
+  background: #ede9fe;
+  border-bottom: 1px solid #ddd6fe;
+  color: #5b21b6;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.625rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tagBannerClear {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #7c3aed;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+.tagBannerClear:hover { color: #5b21b6; }
+
+/* ── Container ──────────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.resultCount {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 1.5rem;
+}
+
+/* ── Grid ───────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ── Card ───────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+}
+.card:hover {
+  box-shadow: 0 6px 20px rgba(109,40,217,0.1);
+  border-color: #c4b5fd;
+  transform: translateY(-2px);
+}
+
+.cardAuthor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9, #a78bfa);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cardAuthorName {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.cardAuthorRole {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-left: 0.25rem;
+}
+
+.cardTitle {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+  line-height: 1.3;
+}
+.card:hover .cardTitle { color: #6d28d9; }
+
+.cardDesc {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.125rem;
+}
+
+.cardTag {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #6d28d9;
+  background: #f3e8ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.cardDot { color: #d1d5db; }
+
+/* ── Skeleton ────────────────────────────────────────────── */
+.skeleton {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skBone {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #d1d5db 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skAuthor { height: 20px; width: 40%; }
+.skTitle  { height: 22px; width: 80%; }
+.skDesc   { height: 40px; width: 100%; }
+.skMeta   { height: 14px; width: 35%; }
+
+/* ── Empty state ─────────────────────────────────────────── */
+.empty {
+  text-align: center;
+  padding: 5rem 1rem;
+}
+
+.emptyIcon { font-size: 3rem; margin-bottom: 1rem; }
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 0.5rem;
+}
+
+.emptySub {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.6;
+}
+
+.emptyBtn {
+  padding: 0.625rem 1.5rem;
+  background: #6d28d9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.emptyBtn:hover { background: #5b21b6; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 2.5rem 1rem 2rem; }
+  .container { padding: 1.5rem 1rem 3rem; }
+  .grid { grid-template-columns: 1fr; }
+}
