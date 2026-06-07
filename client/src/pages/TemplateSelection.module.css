@@ -1,0 +1,221 @@
+/* TemplateSelection — "Just two more easy steps" page */
+
+.page {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar ──────────────────────────────── */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #1e1133;
+  color: #fff;
+}
+
+.wordmark {
+  font-size: 1.375rem;
+  font-weight: 900;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.backLink {
+  font-size: 0.875rem;
+  color: #c4b5fd;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.backLink:hover { color: #fff; }
+
+/* ── Main content ─────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  padding: 4rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* ── Steps column ─────────────────────────── */
+.stepsCol {
+  flex: 1;
+  min-width: 300px;
+  max-width: 440px;
+}
+
+.stepsTitle {
+  font-size: clamp(1.75rem, 3.5vw, 2.375rem);
+  font-weight: 900;
+  color: #111827;
+  line-height: 1.2;
+  margin: 0 0 2.5rem;
+}
+
+.stepsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.stepCircle {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #0d9488;
+  color: #0d9488;
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.stepCircleDone {
+  background: #0d9488;
+  color: #fff;
+  border-color: #0d9488;
+}
+.stepCircleDone svg { width: 20px; height: 20px; }
+
+.stepText {
+  font-size: 1.0625rem;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.5;
+  padding-top: 8px;
+}
+.stepTextDone { font-weight: 700; color: #111827; }
+
+/* ── Preview column ───────────────────────── */
+.previewCol {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.previewOuter {
+  width: 280px;
+  height: 396px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+
+.previewScaler {
+  width: 794px;
+  transform-origin: top left;
+  transform: scale(calc(280 / 794));
+  pointer-events: none;
+  user-select: none;
+}
+
+.changeLink {
+  font-size: 0.9375rem;
+  color: #0d9488;
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  padding: 0;
+}
+.changeLink:hover { color: #0f766e; }
+
+.nextBtn {
+  display: block;
+  width: 280px;
+  padding: 1rem;
+  background: #6b21a8;
+  color: #fff;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.nextBtn:hover { background: #5b21b6; }
+
+.legal {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.legal a { color: #6b21a8; text-decoration: none; }
+.legal a:hover { text-decoration: underline; }
+
+.noTemplate {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ── Premium notice ───────────────────────── */
+.premiumNotice {
+  width: 280px;
+  background: #faf5ff;
+  border: 1.5px solid #6b21a8;
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.8125rem;
+  color: #374151;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.unlockLink {
+  background: none;
+  border: none;
+  color: #6b21a8;
+  font-weight: 700;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.unlockLink:hover { color: #5b1a96; }
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 768px) {
+  .main { gap: 2.5rem; padding: 2.5rem 1.25rem; }
+  .stepsCol { max-width: 100%; }
+}

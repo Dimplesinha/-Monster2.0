@@ -134,6 +134,9 @@ const userSchema = new mongoose.Schema(
     companyProfile:              { type: companyProfileSchema, default: null },
     employerOnboardingComplete:  { type: Boolean, default: false },
 
+    // Resume builder subscription plan (jobseeker only)
+    resumePlan:    { type: String, enum: ['free', 'premium'], default: 'free' },
+
     // Parsed resume data (auto-populated from uploaded resume)
     resumeParsed:  { type: Boolean, default: false },
     summary:       { type: String,  default: '' },
