@@ -320,8 +320,8 @@ export default function Navbar() {
             <li><Link to="/salary-calculator">Salary Tools</Link></li>
             <li><Link to="/career-advice">Career Advice</Link></li>
             <li><Link to="/blogs">Community Blogs</Link></li>
-            <li><a href="#resume-templates">Free Resume Templates</a></li>
-            <li><a href="#resume-builder">Free Resume Builder</a></li>
+            <li><Link to="/resume/templates">Free Resume Templates</Link></li>
+            <li><Link to="/resume-builder/template-selection">Free Resume Builder</Link></li>
 
             {/* Mobile-only auth */}
             {!user && (

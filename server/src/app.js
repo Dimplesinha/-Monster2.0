@@ -1,3 +1,13 @@
+/* ── Suppress known harmless Node.js experimental warnings ──────── */
+/* Must run before ANY requires so the patch is in place at load time */
+const _emitWarning = process.emitWarning.bind(process);
+process.emitWarning = (msg, ...rest) => {
+  const s = String(msg);
+  // pdf-parse v1 triggers Node v22's experimental localStorage warning — harmless
+  if (s.includes('localStorage')) return;
+  _emitWarning(msg, ...rest);
+};
+
 require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
@@ -12,9 +22,11 @@ const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
 const articleRoutes = require('./routes/articles');
 const userRoutes = require('./routes/users');
-const blogRoutes      = require('./routes/blogs');
-const savedJobRoutes  = require('./routes/savedJobs');
-const salaryRoutes    = require('./routes/salary');
+const blogRoutes           = require('./routes/blogs');
+const savedJobRoutes       = require('./routes/savedJobs');
+const salaryRoutes         = require('./routes/salary');
+const resumeTemplateRoutes = require('./routes/resumeTemplates');
+const resumeRoutes         = require('./routes/resumes');
 
 const app = express();
 
@@ -43,8 +55,10 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/blogs',      blogRoutes);
-app.use('/api/saved-jobs', savedJobRoutes);
-app.use('/api/salary',    salaryRoutes);
+app.use('/api/saved-jobs',       savedJobRoutes);
+app.use('/api/salary',           salaryRoutes);
+app.use('/api/resume-templates', resumeTemplateRoutes);
+app.use('/api/resumes',          resumeRoutes);
 
 /* Health */
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));

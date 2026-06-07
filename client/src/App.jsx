@@ -33,6 +33,10 @@ import SavedJobsPage from './pages/SavedJobsPage';
 import SalaryCalculator from './pages/SalaryCalculator';
 import SalaryResult from './pages/SalaryResult';
 import SalaryAdmin from './pages/SalaryAdmin';
+import ResumeTemplates from './pages/ResumeTemplates';
+import TemplateSelection from './pages/TemplateSelection';
+import ResumeSourceSelection from './pages/ResumeSourceSelection';
+import ResumeBuilderEditor from './pages/ResumeBuilderEditor';
 import NotFound from './pages/NotFound';
 
 // Exact paths that suppress the jobseeker Navbar & Footer
@@ -46,9 +50,10 @@ const NO_SHELL_EXACT = [
 
 // Prefix-based: any path under these prefixes also hides the jobseeker shell
 const NO_SHELL_PREFIX = [
-  '/employer/',       // /employer/register, /employer/pricing, /employer/onboarding, /employer/jobs/:id, /employer/blogs
-  '/my-blogs/',       // /my-blogs/new, /my-blogs/:id/edit  (editor has own header)
-  '/admin/',          // /admin/salary-data (admin standalone pages)
+  '/employer/',         // /employer/register, /employer/pricing, /employer/onboarding, /employer/jobs/:id, /employer/blogs
+  '/my-blogs/',         // /my-blogs/new, /my-blogs/:id/edit  (editor has own header)
+  '/admin/',            // /admin/salary-data (admin standalone pages)
+  '/resume-builder/',   // resume builder flow has its own header
 ];
 
 export default function App() {
@@ -247,6 +252,33 @@ export default function App() {
           element={
             <ProtectedRoute roles={['admin']}>
               <SalaryAdmin />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ── Resume Templates & Builder ───────────────────────── */}
+        <Route path="/resume/templates" element={<ResumeTemplates />} />
+        <Route
+          path="/resume-builder/template-selection"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <TemplateSelection />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/resume-builder/upload"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <ResumeSourceSelection />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/resume-builder/edit/:resumeId"
+          element={
+            <ProtectedRoute roles={['jobseeker']}>
+              <ResumeBuilderEditor />
             </ProtectedRoute>
           }
         />
