@@ -398,10 +398,13 @@ export default function ResumeBuilderEditor() {
   /* ── Download PDF (browser print) ────────────────────────────── */
   const downloadPdf = () => {
     setDownloading('pdf');
-    // Show only the resume preview and trigger print
-    document.title = `${resume?.personalInfo?.name || 'Resume'} — Resume`;
-    window.print();
-    setDownloading('');
+    const prev = document.title;
+    document.title = `${resume?.personalInfo?.name || 'Resume'}_Resume`;
+    setTimeout(() => {
+      window.print();
+      document.title = prev;
+      setDownloading('');
+    }, 50);
   };
 
   /* ── Download DOCX ────────────────────────────────────────────── */
@@ -410,12 +413,15 @@ export default function ResumeBuilderEditor() {
     try {
       const { data } = await api.post(`/resumes/${resumeId}/download/docx`, {}, {
         responseType: 'blob',
+        timeout: 30000,
       });
       const url = URL.createObjectURL(data);
       const a   = document.createElement('a');
       a.href     = url;
       a.download = `${resume?.personalInfo?.name || 'resume'}_resume.docx`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch {
       setError('DOCX download failed. Please try again.');
@@ -554,18 +560,23 @@ export default function ResumeBuilderEditor() {
         </div>
       </div>
 
-      {/* ── Print CSS — only shows preview area when printing ───── */}
+      {/* ── Print CSS — only shows resume when printing ─────────── */}
       <style>{`
         @media print {
-          body > * { display: none !important; }
+          * { visibility: hidden !important; }
+          #resume-print-target,
+          #resume-print-target * { visibility: visible !important; }
           #resume-print-target {
-            display: block !important;
             position: fixed !important;
             inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
             transform: none !important;
             width: 794px !important;
             margin: 0 auto !important;
+            z-index: 99999 !important;
           }
+          @page { margin: 0; size: A4 portrait; }
         }
       `}</style>
     </div>

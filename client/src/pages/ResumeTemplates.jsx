@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import ResumePreview from '../components/ResumePreview';
 import TemplatePreviewModal from '../components/TemplatePreviewModal';
+import PremiumUpgradeModal from '../components/PremiumUpgradeModal';
 import styles from './ResumeTemplates.module.css';
 
 /* ── Icons ────────────────────────────────────────────────────────── */
@@ -32,11 +34,12 @@ function ChevronDown() {
 }
 
 /* ── Template Card ────────────────────────────────────────────────── */
-function TemplateCard({ template, onPreview, onCustomize }) {
+function TemplateCard({ template, onPreview, onCustomize, onUpgrade, isPremiumUser }) {
   const levelColors = { Entry: '#16a34a', 'Mid-Level': '#2563eb', Senior: '#7c3aed', Executive: '#dc2626', 'All Levels': '#6b7280' };
+  const locked = template.isPremium && !isPremiumUser;
 
   return (
-    <div className={styles.card} role="article">
+    <div className={`${styles.card} ${locked ? styles.cardLocked : ''}`} role="article">
       {/* Thumbnail */}
       <div className={styles.thumbnailWrap}>
         {/* Actual scaled-down preview */}
@@ -45,6 +48,14 @@ function TemplateCard({ template, onPreview, onCustomize }) {
             <ResumePreview template={template} useSample />
           </div>
         </div>
+
+        {/* Lock overlay for premium templates */}
+        {locked && (
+          <div className={styles.lockOverlay}>
+            <span className={styles.lockIcon}>🔒</span>
+            <span className={styles.lockLabel}>Premium</span>
+          </div>
+        )}
 
         {/* Badges */}
         <div className={styles.badges}>
@@ -59,9 +70,15 @@ function TemplateCard({ template, onPreview, onCustomize }) {
           <button className={styles.previewBtn} onClick={() => onPreview(template)} aria-label={`Preview ${template.name}`}>
             <MagnifyIcon /> Preview
           </button>
-          <button className={styles.customizeBtn} onClick={() => onCustomize(template)} aria-label={`Customize ${template.name}`}>
-            Customize
-          </button>
+          {locked ? (
+            <button className={styles.upgradeBtn} onClick={() => onUpgrade(template)} aria-label="Unlock premium template">
+              🔒 Unlock
+            </button>
+          ) : (
+            <button className={styles.customizeBtn} onClick={() => onCustomize(template)} aria-label={`Customize ${template.name}`}>
+              Customize
+            </button>
+          )}
         </div>
       </div>
 
@@ -124,6 +141,8 @@ function FilterDropdown({ label, options, value, onChange }) {
 /* ── Page ─────────────────────────────────────────────────────────── */
 export default function ResumeTemplates() {
   const navigate = useNavigate();
+  const { user }  = useAuth();
+  const isPremiumUser = user?.resumePlan === 'premium';
 
   const [templates, setTemplates]   = useState([]);
   const [total,     setTotal]       = useState(0);
@@ -132,6 +151,7 @@ export default function ResumeTemplates() {
   const [loading,   setLoading]     = useState(true);
   const [error,     setError]       = useState('');
   const [preview,   setPreview]     = useState(null); // template being previewed in modal
+  const [showUpgrade, setShowUpgrade] = useState(false); // premium upgrade modal
 
   // Filters
   const [search,          setSearch]          = useState('');
@@ -177,9 +197,12 @@ export default function ResumeTemplates() {
   useEffect(() => { fetchTemplates(1); }, [fetchTemplates]);
 
   const handleCustomize = (template) => {
+    if (template.isPremium && !isPremiumUser) { setShowUpgrade(true); return; }
     localStorage.setItem('selectedTemplate', JSON.stringify(template));
     navigate('/resume-builder/template-selection');
   };
+
+  const handleUpgrade = () => setShowUpgrade(true);
 
   const activeFilters = [filterCategory, filterLevel, filterStyle, filterLayout, filterPremium].filter(Boolean).length;
 
@@ -275,6 +298,8 @@ export default function ResumeTemplates() {
                 template={tpl}
                 onPreview={setPreview}
                 onCustomize={handleCustomize}
+                onUpgrade={handleUpgrade}
+                isPremiumUser={isPremiumUser}
               />
             ))}
           </div>
@@ -305,6 +330,16 @@ export default function ResumeTemplates() {
           templates={templates}
           onClose={() => setPreview(null)}
           onNavigate={setPreview}
+          isPremiumUser={isPremiumUser}
+          onUpgrade={() => { setPreview(null); setShowUpgrade(true); }}
+        />
+      )}
+
+      {/* ── Premium Upgrade Modal ─────────────────────────────────── */}
+      {showUpgrade && (
+        <PremiumUpgradeModal
+          onClose={() => setShowUpgrade(false)}
+          onUpgraded={() => setShowUpgrade(false)}
         />
       )}
     </>

@@ -258,4 +258,24 @@ router.patch('/me/job-preferences/skip', requireAuth, requireRole('jobseeker'), 
  */
 router.patch('/me/company-profile', requireAuth, requireRole('employer', 'admin'), updateCompanyProfile);
 
+/* ── Resume Builder subscription ─────────────────────────────────── */
+router.post('/me/resume-plan/upgrade', requireAuth, requireRole('jobseeker'), async (req, res, next) => {
+  try {
+    const User = require('../models/User');
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { resumePlan: 'premium' },
+      { new: true }
+    );
+    // Return a fresh token so the client's JWT reflects the new plan
+    const jwt = require('jsonwebtoken');
+    const token = jwt.sign(
+      { id: user._id, role: user.role, resumePlan: 'premium' },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+    res.json({ message: 'Upgraded to premium', resumePlan: 'premium', token });
+  } catch (err) { next(err); }
+});
+
 module.exports = router;

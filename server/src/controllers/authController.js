@@ -7,7 +7,7 @@ const { sendVerificationEmail } = require('../config/mailer');
 /* ── helpers ─────────────────────────────────────────────────────── */
 function signToken(user) {
   return jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user._id, role: user.role, resumePlan: user.resumePlan || 'free' },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
@@ -28,6 +28,7 @@ function safeUser(user) {
     // employer profile
     companyProfile:              user.companyProfile             || null,
     employerOnboardingComplete:  user.employerOnboardingComplete || false,
+    resumePlan:       user.resumePlan        || 'free',
     // parsed resume data
     resumeParsed:     user.resumeParsed     || false,
     summary:          user.summary          || '',

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import ResumePreview from '../components/ResumePreview';
+import PremiumUpgradeModal from '../components/PremiumUpgradeModal';
 import styles from './TemplateSelection.module.css';
 
 function CheckIcon() {
@@ -13,7 +15,11 @@ function CheckIcon() {
 
 export default function TemplateSelection() {
   const navigate  = useNavigate();
-  const [template, setTemplate] = useState(null);
+  const { user }  = useAuth();
+  const isPremiumUser = user?.resumePlan === 'premium';
+
+  const [template,     setTemplate]     = useState(null);
+  const [showUpgrade,  setShowUpgrade]  = useState(false);
 
   useEffect(() => {
     try {
@@ -22,7 +28,10 @@ export default function TemplateSelection() {
     } catch { /* ignore */ }
   }, []);
 
-  const handleNext = () => navigate('/resume-builder/upload');
+  const handleNext = () => {
+    if (template?.isPremium && !isPremiumUser) { setShowUpgrade(true); return; }
+    navigate('/resume-builder/upload');
+  };
 
   const steps = [
     { num: 1, done: true,  text: "You've already chosen a resume template!" },
@@ -31,6 +40,7 @@ export default function TemplateSelection() {
   ];
 
   return (
+    <>
     <div className={styles.page}>
       {/* ── Top bar ───────────────────────────────────────────────── */}
       <header className={styles.topBar}>
@@ -58,11 +68,16 @@ export default function TemplateSelection() {
         <div className={styles.previewCol}>
           {template ? (
             <>
-              <div className={styles.previewOuter}>
+              <div className={styles.previewOuter} style={template.isPremium && !isPremiumUser ? { filter: 'blur(1.5px)' } : {}}>
                 <div className={styles.previewScaler}>
                   <ResumePreview template={template} useSample />
                 </div>
               </div>
+              {template.isPremium && !isPremiumUser && (
+                <div className={styles.premiumNotice}>
+                  🔒 This is a <strong>Premium</strong> template. <button className={styles.unlockLink} onClick={() => setShowUpgrade(true)}>Unlock for ₹199/month</button>
+                </div>
+              )}
               <button
                 className={styles.changeLink}
                 onClick={() => navigate('/resume/templates')}
@@ -84,5 +99,13 @@ export default function TemplateSelection() {
         </div>
       </main>
     </div>
+
+      {showUpgrade && (
+        <PremiumUpgradeModal
+          onClose={() => setShowUpgrade(false)}
+          onUpgraded={() => setShowUpgrade(false)}
+        />
+      )}
+    </>
   );
 }

@@ -124,7 +124,10 @@ function ClassicLayout({ data, tpl }) {
               <span style={{ fontSize: 9.5, color: '#666' }}>{exp.startDate}{exp.startDate ? ' – ' : ''}{exp.current ? 'Present' : exp.endDate}</span>
             </div>
             <div style={{ fontSize: 10, color: accent, fontStyle: 'italic' }}>{exp.company}{exp.location ? `, ${exp.location}` : ''}</div>
-            {exp.bullets?.map((b, j) => <div key={j} style={{ fontSize: 10, color: '#444', paddingLeft: 12, marginTop: 2 }}>• {b}</div>)}
+            {exp.bullets?.length > 0 && <>
+              <div style={{ fontSize: 8.5, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4, marginBottom: 2 }}>Key Achievements &amp; Responsibilities</div>
+              {exp.bullets.map((b, j) => <div key={j} style={{ fontSize: 10, color: '#444', paddingLeft: 12, marginTop: 2 }}>• {b}</div>)}
+            </>}
           </div>
         ))}
       </>}
@@ -260,7 +263,10 @@ function SidebarLayout({ data, tpl, sidebarRight = false }) {
               <span style={{ fontSize: 9.5, color: '#666' }}>{exp.startDate}{exp.startDate ? ' – ' : ''}{exp.current ? 'Present' : exp.endDate}</span>
             </div>
             <div style={{ fontSize: 10, color: accent, fontStyle: 'italic', marginBottom: 3 }}>{exp.company}{exp.location ? `, ${exp.location}` : ''}</div>
-            {exp.bullets?.map((b, j) => <div key={j} style={{ fontSize: 10, color: '#444', paddingLeft: 12, marginTop: 2 }}>• {b}</div>)}
+            {exp.bullets?.length > 0 && <>
+              <div style={{ fontSize: 8.5, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4, marginBottom: 2 }}>Key Achievements &amp; Responsibilities</div>
+              {exp.bullets.map((b, j) => <div key={j} style={{ fontSize: 10, color: '#444', paddingLeft: 12, marginTop: 2 }}>• {b}</div>)}
+            </>}
           </div>
         ))}
       </>}
@@ -327,7 +333,10 @@ function HeaderBandLayout({ data, tpl }) {
                 <span style={{ fontSize: 9.5, color: '#666' }}>{exp.startDate}{exp.startDate ? ' – ' : ''}{exp.current ? 'Present' : exp.endDate}</span>
               </div>
               {exp.location && <div style={{ fontSize: 9.5, color: '#777', marginBottom: 3 }}>{exp.location}</div>}
-              {exp.bullets?.map((b, j) => <div key={j} style={{ fontSize: 10, color: '#444', paddingLeft: 12, marginTop: 2 }}>• {b}</div>)}
+              {exp.bullets?.length > 0 && <>
+                <div style={{ fontSize: 8.5, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4, marginBottom: 2 }}>Key Achievements &amp; Responsibilities</div>
+                {exp.bullets.map((b, j) => <div key={j} style={{ fontSize: 10, color: '#444', paddingLeft: 12, marginTop: 2 }}>• {b}</div>)}
+              </>}
             </div>
           ))}
         </>}

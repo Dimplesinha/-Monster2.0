@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ResumePreview from './ResumePreview';
 import styles from './TemplatePreviewModal.module.css';
 
-export default function TemplatePreviewModal({ template, templates, onClose, onNavigate }) {
+export default function TemplatePreviewModal({ template, templates, onClose, onNavigate, isPremiumUser, onUpgrade }) {
   const navigate   = useNavigate();
   const modalRef   = useRef(null);
   const currentIdx = templates ? templates.findIndex((t) => t._id === template._id) : -1;
@@ -27,6 +27,7 @@ export default function TemplatePreviewModal({ template, templates, onClose, onN
   const handleBackdrop = (e) => { if (e.target === modalRef.current) onClose(); };
 
   const handleCustomize = () => {
+    if (template.isPremium && !isPremiumUser) { onClose(); onUpgrade?.(); return; }
     localStorage.setItem('selectedTemplate', JSON.stringify(template));
     onClose();
     navigate('/resume-builder/template-selection');
